@@ -6,10 +6,18 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import type { User } from '@/lib/types'
 
+const LockIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500">
+    <rect x="3" y="11" width="18" height="11" rx="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+)
+
 const NAV_ITEMS = [
   {
     href: '/dashboard',
     label: 'Dashboard',
+    proOnly: false,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <rect x="3" y="3" width="7" height="7" />
@@ -22,6 +30,7 @@ const NAV_ITEMS = [
   {
     href: '/ask',
     label: 'Ask',
+    proOnly: false,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -31,6 +40,7 @@ const NAV_ITEMS = [
   {
     href: '/notebook',
     label: 'Notebook',
+    proOnly: false,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -41,6 +51,7 @@ const NAV_ITEMS = [
   {
     href: '/analytics',
     label: 'Analytics',
+    proOnly: true,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <line x1="18" y1="20" x2="18" y2="10" />
@@ -52,6 +63,7 @@ const NAV_ITEMS = [
   {
     href: '/settings',
     label: 'Settings',
+    proOnly: false,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <circle cx="12" cy="12" r="3" />
@@ -101,10 +113,11 @@ export default function Sidebar({ user }: SidebarProps) {
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+          const locked = isFree && item.proOnly
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={locked ? '/upgrade' : item.href}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                 active
@@ -116,21 +129,22 @@ export default function Sidebar({ user }: SidebarProps) {
                 {item.icon}
               </span>
               {item.label}
+              {locked && <LockIcon />}
             </Link>
           )
         })}
 
         {/* Upgrade link */}
         <Link
-          href="/billing"
+          href="/upgrade"
           className={cn(
             'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-            pathname === '/billing'
+            pathname === '/upgrade' || pathname === '/billing'
               ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
               : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700/50 dark:hover:text-gray-100'
           )}
         >
-          <span className={cn(pathname === '/billing' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500')}>
+          <span className={cn(pathname === '/upgrade' || pathname === '/billing' ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
@@ -150,7 +164,7 @@ export default function Sidebar({ user }: SidebarProps) {
           <p className="text-xs font-semibold mb-0.5">Free plan — 5 questions/day</p>
           <p className="text-xs text-indigo-100 mb-2">Upgrade for unlimited questions</p>
           <Link
-            href="/billing"
+            href="/upgrade"
             className="block text-center text-xs font-semibold bg-white text-indigo-700 rounded-lg py-1.5 hover:bg-indigo-50 transition-colors"
           >
             Upgrade to Pro

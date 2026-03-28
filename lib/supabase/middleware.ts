@@ -1,9 +1,21 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED_PREFIXES = ['/dashboard', '/ask', '/quiz', '/notebook']
+const PROTECTED_PREFIXES = [
+  '/dashboard',
+  '/ask',
+  '/quiz',
+  '/notebook',
+  '/analytics',
+  '/settings',
+  '/upgrade',
+  '/billing',
+]
+
 const AUTH_ROUTES = ['/login', '/signup']
 const PUBLIC_ROUTES = ['/', '/callback', '/terms', '/privacy']
+
+const FREE_DAILY_LIMIT = 5
 
 function isProtected(pathname: string): boolean {
   return PROTECTED_PREFIXES.some(
@@ -59,6 +71,26 @@ export async function updateSession(request: NextRequest) {
     const askUrl = request.nextUrl.clone()
     askUrl.pathname = '/ask'
     return NextResponse.redirect(askUrl)
+  }
+
+  // Enforce daily question limit for free users at the edge,
+  // specifically on the ask API endpoint (defense-in-depth alongside route handler check)
+  if (user && pathname === '/api/ask' && request.method === 'POST') {
+    const { data: profile } = await supabase
+      .from('users')
+      .select('plan, questions_today')
+      .eq('id', user.id)
+      .single()
+
+    if (
+      profile?.plan === 'free' &&
+      (profile.questions_today ?? 0) >= FREE_DAILY_LIMIT
+    ) {
+      return NextResponse.json(
+        { error: 'quota_exceeded', questionsToday: profile.questions_today },
+        { status: 429 }
+      )
+    }
   }
 
   return supabaseResponse

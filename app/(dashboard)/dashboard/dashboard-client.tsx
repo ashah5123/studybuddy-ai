@@ -177,7 +177,7 @@ export default function DashboardClient({
             </p>
           </div>
           <Link
-            href="/billing"
+            href="/upgrade"
             className="flex-shrink-0 text-xs font-semibold bg-white text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-50 transition-colors whitespace-nowrap"
           >
             Upgrade →

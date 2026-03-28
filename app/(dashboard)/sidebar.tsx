@@ -76,7 +76,7 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const isFree = user.plan === 'free'
 
-  const initials = (user.full_name ?? user.email ?? 'U')
+  const initials = (user.name ?? user.email ?? 'U')
     .split(' ')
     .map((w) => w[0])
     .join('')
@@ -166,7 +166,7 @@ export default function Sidebar({ user }: SidebarProps) {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-              {user.full_name ?? 'Student'}
+              {user.name ?? 'Student'}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
           </div>

@@ -157,7 +157,7 @@ export default function DashboardClient({
       {/* ── Welcome header ── */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          {greeting}, {user.full_name?.split(' ')[0] ?? 'Student'} 👋
+          {greeting}, {user.name?.split(' ')[0] ?? 'Student'} 👋
         </h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">{motivation}</p>
         <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">

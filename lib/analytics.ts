@@ -225,6 +225,91 @@ export async function getSessionCost(
   return getCostSummary(db, userId, { sessionId })
 }
 
+export async function getSemanticSearchStats(
+  db: DB,
+  userId: string
+): Promise<{ hits: number; misses: number; costSavedUsd: number }> {
+  const { data, error } = await db
+    .from('analytics_events')
+    .select('metadata')
+    .eq('user_id', userId)
+    .eq('event_type', 'semantic_search' satisfies AnalyticsEventType)
+
+  if (error) throw error
+  if (!data || data.length === 0) return { hits: 0, misses: 0, costSavedUsd: 0 }
+
+  let hits = 0
+  let misses = 0
+  for (const row of data) {
+    if ((row.metadata as Record<string, unknown>)?.hit_found === true) {
+      hits++
+    } else {
+      misses++
+    }
+  }
+
+  const costSummary = await getCostSummary(db, userId)
+  const avgCostPerCall =
+    costSummary.api_calls > 0 ? costSummary.estimated_cost_usd / costSummary.api_calls : 0
+  const costSavedUsd = hits * avgCostPerCall
+
+  return { hits, misses, costSavedUsd }
+}
+
+export async function getPeakStudyHours(
+  db: DB,
+  userId: string
+): Promise<{ hour: number; count: number }[]> {
+  const { data, error } = await db
+    .from('analytics_events')
+    .select('created_at')
+    .eq('user_id', userId)
+    .eq('event_type', 'question_asked' satisfies AnalyticsEventType)
+
+  if (error) throw error
+  if (!data || data.length === 0) {
+    return Array.from({ length: 24 }, (_, hour) => ({ hour, count: 0 }))
+  }
+
+  const counts: Record<number, number> = {}
+  for (const row of data) {
+    const hour = new Date(row.created_at).getHours()
+    counts[hour] = (counts[hour] ?? 0) + 1
+  }
+
+  return Array.from({ length: 24 }, (_, hour) => ({ hour, count: counts[hour] ?? 0 }))
+}
+
+export async function getQuizScoresBySubject(
+  db: DB,
+  userId: string
+): Promise<{ subject: string; avgScore: number; count: number }[]> {
+  const { data, error } = await (db as unknown as import('@supabase/supabase-js').SupabaseClient)
+    .from('quizzes')
+    .select('score, questions!inner(subject)')
+    .eq('user_id', userId)
+    .not('score', 'is', null)
+
+  if (error) throw error
+  if (!data || data.length === 0) return []
+
+  const bySubject: Record<string, { total: number; count: number }> = {}
+  for (const row of data as unknown as { score: number; questions: { subject: string } }[]) {
+    const subject = row.questions?.subject ?? 'Other'
+    if (!bySubject[subject]) bySubject[subject] = { total: 0, count: 0 }
+    bySubject[subject].total += (row.score / 3) * 100
+    bySubject[subject].count++
+  }
+
+  return Object.entries(bySubject)
+    .map(([subject, { total, count }]) => ({
+      subject,
+      avgScore: Math.round(total / count),
+      count,
+    }))
+    .sort((a, b) => b.count - a.count)
+}
+
 export async function getPlanUsageBreakdown(
   db: DB,
   userId: string

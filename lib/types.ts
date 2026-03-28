@@ -14,7 +14,7 @@ export type AnalyticsEventType =
 // Database row types
 // ────────────────────────────────────────────────────────────
 
-export type Plan = 'free' | 'pro'
+export type Plan = 'free' | 'pro' | 'family'
 
 export type SubscriptionStatus =
   | 'active'
@@ -35,7 +35,30 @@ export interface User {
   questions_today: number
   streak: number
   last_active: string | null
+  referral_code: string | null
+  referral_pro_expires_at: string | null
+  welcome_email_sent: boolean
   created_at: string
+}
+
+export interface Referral {
+  id: string
+  referrer_id: string
+  referred_email: string | null
+  referred_user_id: string | null
+  status: 'pending' | 'completed'
+  created_at: string
+  completed_at: string | null
+}
+
+export interface FamilyMember {
+  id: string
+  owner_id: string
+  member_id: string | null
+  invited_email: string
+  status: 'pending' | 'active' | 'removed'
+  invited_at: string
+  joined_at: string | null
 }
 
 export interface Question {

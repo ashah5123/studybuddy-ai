@@ -311,6 +311,92 @@ function SubscriptionSection({
 }
 
 // ────────────────────────────────────────────────────────────
+// Referral section
+// ────────────────────────────────────────────────────────────
+
+function ReferralSection({ user }: { user: User }) {
+  const [copied, setCopied] = useState(false)
+  const [referralCode, setReferralCode] = useState<string | null>(user.referral_code ?? null)
+  const [loadingCode, setLoadingCode] = useState(false)
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://studybuddy.ai'
+  const referralLink = referralCode ? `${appUrl}/signup?ref=${referralCode}` : null
+
+  const generateCode = async () => {
+    setLoadingCode(true)
+    try {
+      const res = await fetch('/api/referral', { method: 'GET' })
+      const data = await res.json()
+      if (data.referral_code) setReferralCode(data.referral_code)
+    } finally {
+      setLoadingCode(false)
+    }
+  }
+
+  const copyLink = () => {
+    if (!referralLink) return
+    navigator.clipboard.writeText(referralLink).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <Section
+      title="Refer a friend"
+      description="Share your referral link — you both get 1 week of Pro free when they sign up"
+    >
+      <div className="space-y-4">
+        {referralLink ? (
+          <>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                readOnly
+                value={referralLink}
+                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-sm text-gray-700 dark:text-gray-300 font-mono select-all"
+              />
+              <button
+                onClick={copyLink}
+                className={cn(
+                  'px-4 py-2 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap',
+                  copied
+                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                )}
+              >
+                {copied ? 'Copied!' : 'Copy link'}
+              </button>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+              <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-xs text-indigo-700 dark:text-indigo-300">
+                When a friend signs up using your link, you both unlock 7 days of Pro — automatically.
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Generate your unique referral link to start sharing.
+            </p>
+            <button
+              onClick={generateCode}
+              disabled={loadingCode}
+              className="px-4 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+            >
+              {loadingCode ? 'Generating…' : 'Get referral link'}
+            </button>
+          </div>
+        )}
+      </div>
+    </Section>
+  )
+}
+
+// ────────────────────────────────────────────────────────────
 // Danger zone
 // ────────────────────────────────────────────────────────────
 
@@ -417,6 +503,7 @@ export default function SettingsClient({ user, subscription, totalQuestions }: P
         subscription={subscription}
         questionsThisMonth={totalQuestions}
       />
+      <ReferralSection user={user} />
       <DangerZone />
     </div>
   )

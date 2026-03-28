@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { stripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendPaymentConfirmationEmail } from '@/lib/email/templates'
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -47,6 +48,27 @@ export async function POST(request: NextRequest) {
       )
 
       await supabase.from('users').update({ plan }).eq('id', userId)
+
+      try {
+        const { data: userProfile } = await supabase
+          .from('users')
+          .select('email, name')
+          .eq('id', userId)
+          .single()
+
+        if (userProfile?.email) {
+          const planAmounts = { pro: 900, family: 1900 } as const
+          await sendPaymentConfirmationEmail({
+            to: userProfile.email,
+            name: userProfile.name,
+            plan,
+            amountUsd: planAmounts[plan] ?? 900,
+            periodEnd: new Date(sub.current_period_end * 1000).toISOString(),
+          })
+        }
+      } catch {
+        // Email failure is non-fatal
+      }
       break
     }
 

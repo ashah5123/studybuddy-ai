@@ -78,12 +78,18 @@ export async function updateSession(request: NextRequest) {
   if (user && pathname === '/api/ask' && request.method === 'POST') {
     const { data: profile } = await supabase
       .from('users')
-      .select('plan, questions_today')
+      .select('plan, questions_today, referral_pro_expires_at')
       .eq('id', user.id)
       .single()
 
+    // Treat referral_pro_expires_at as a temporary Pro upgrade
+    const hasReferralPro =
+      profile?.referral_pro_expires_at &&
+      new Date(profile.referral_pro_expires_at) > new Date()
+
     if (
       profile?.plan === 'free' &&
+      !hasReferralPro &&
       (profile.questions_today ?? 0) >= FREE_DAILY_LIMIT
     ) {
       return NextResponse.json(

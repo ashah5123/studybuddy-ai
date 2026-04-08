@@ -24,6 +24,7 @@ export interface Profile {
   id: string                  // UUID, references auth.users
   email: string
   full_name: string | null
+  bio: string | null
   avatar_url: string | null
   subscription_tier: SubscriptionTier
   created_at: string          // ISO 8601 timestamp
@@ -126,73 +127,30 @@ export interface UsageTracking {
   updated_at: string
 }
 
+export interface ScheduleEvent {
+  id: string
+  user_id: string
+  course_id: string | null
+  title: string
+  description: string | null
+  starts_at: string
+  ends_at: string
+  color: string
+  created_at: string
+  updated_at: string
+}
+
 // ──────────────────────────────────────────────────────────────
-// Database shape (passed as the generic to createClient)
+// Database row / enum types for the app (Supabase table shapes).
+// The Supabase client is intentionally untyped at the generic level so
+// @supabase/supabase-js accepts inserts/updates without `never` inference
+// issues from hand-written schema definitions.
 // ──────────────────────────────────────────────────────────────
 
 export interface Database {
   public: {
-    Tables: {
-      profiles: {
-        Row: Profile
-        Insert: Omit<Profile, 'created_at' | 'updated_at'> &
-          Partial<Pick<Profile, 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<Profile, 'id'>>
-      }
-      courses: {
-        Row: Course
-        Insert: Omit<Course, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<Course, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<Course, 'id'>>
-      }
-      assignments: {
-        Row: Assignment
-        Insert: Omit<Assignment, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<Assignment, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<Assignment, 'id'>>
-      }
-      conversations: {
-        Row: Conversation
-        Insert: Omit<Conversation, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<Conversation, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<Conversation, 'id'>>
-      }
-      messages: {
-        Row: Message
-        Insert: Omit<Message, 'id' | 'created_at'> &
-          Partial<Pick<Message, 'id' | 'created_at'>>
-        Update: Partial<Omit<Message, 'id'>>
-      }
-      notes: {
-        Row: Note
-        Insert: Omit<Note, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<Note, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<Note, 'id'>>
-      }
-      flashcard_decks: {
-        Row: FlashcardDeck
-        Insert: Omit<FlashcardDeck, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<FlashcardDeck, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<FlashcardDeck, 'id'>>
-      }
-      flashcards: {
-        Row: Flashcard
-        Insert: Omit<Flashcard, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<Flashcard, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<Flashcard, 'id'>>
-      }
-      study_sessions: {
-        Row: StudySession
-        Insert: Omit<StudySession, 'id' | 'created_at'> &
-          Partial<Pick<StudySession, 'id' | 'created_at'>>
-        Update: Partial<Omit<StudySession, 'id'>>
-      }
-      usage_tracking: {
-        Row: UsageTracking
-        Insert: Omit<UsageTracking, 'id' | 'created_at' | 'updated_at'> &
-          Partial<Pick<UsageTracking, 'id' | 'created_at' | 'updated_at'>>
-        Update: Partial<Omit<UsageTracking, 'id'>>
-      }
-    }
+    Tables: Record<string, never>
+    Views: Record<string, never>
+    Functions: Record<string, never>
   }
 }

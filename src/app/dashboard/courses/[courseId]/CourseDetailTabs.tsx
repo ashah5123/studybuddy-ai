@@ -8,11 +8,10 @@ const TABS = ['Assignments', 'Notes'] as const
 type Tab = (typeof TABS)[number]
 
 interface CourseDetailTabsProps {
-  courseId: string
   assignments: Assignment[]
 }
 
-export function CourseDetailTabs({ courseId, assignments }: CourseDetailTabsProps) {
+export function CourseDetailTabs({ assignments }: CourseDetailTabsProps) {
   const [tab, setTab] = useState<Tab>('Assignments')
   // Local state to reflect optimistic toggles without a full refetch
   const [localAssignments, setLocalAssignments] = useState(assignments)
@@ -33,7 +32,7 @@ export function CourseDetailTabs({ courseId, assignments }: CourseDetailTabsProp
             onClick={() => setTab(t)}
             className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
               tab === t
-                ? 'border-blue-600 text-blue-600'
+                ? 'border-indigo-600 text-indigo-700'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >

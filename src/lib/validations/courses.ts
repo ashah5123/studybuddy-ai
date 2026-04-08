@@ -18,5 +18,5 @@ export const assignmentSchema = z.object({
   due_date: z.string().nullable().optional(),
 })
 
-export type CourseInput = z.infer<typeof courseSchema>
-export type AssignmentInput = z.infer<typeof assignmentSchema>
+export type CourseInput = z.input<typeof courseSchema>
+export type AssignmentInput = z.input<typeof assignmentSchema>

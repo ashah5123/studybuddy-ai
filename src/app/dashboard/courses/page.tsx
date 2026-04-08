@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useCourses } from '@/hooks/useCourses'
 import { useAssignments } from '@/hooks/useAssignments'
 import { CourseCard } from '@/components/courses/CourseCard'
@@ -27,7 +27,7 @@ export default function CoursesPage() {
   const { courses, loading, error, refetch } = useCourses()
   const { assignments } = useAssignments()
   const [createOpen, setCreateOpen] = useState(false)
-  const [editingCourse, setEditingCourse] = useState<Course | null>(null)
+  const [, setEditingCourse] = useState<Course | null>(null)
 
   // Build lookup: courseId → next upcoming assignment
   const nextDueMap = assignments.reduce<Record<string, (typeof assignments)[0]>>(
@@ -52,14 +52,17 @@ export default function CoursesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Courses</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600/90">
+            Organize
+          </p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Courses</h1>
+          <p className="mt-2 text-sm text-slate-600">
             {courses.length} course{courses.length !== 1 ? 's' : ''} total
           </p>
         </div>
         <button
           onClick={() => setCreateOpen(true)}
-          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all hover:brightness-105"
         >
           <Plus className="h-4 w-4" />
           New Course
@@ -68,7 +71,7 @@ export default function CoursesPage() {
 
       {/* Error */}
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-xl border border-red-200/90 bg-red-50 p-4 text-sm text-red-800">
           {error.message}
         </div>
       )}
@@ -82,15 +85,13 @@ export default function CoursesPage() {
 
       {/* Empty state */}
       {!loading && courses.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 py-16 text-center">
+        <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200/90 bg-white py-16 text-center shadow-sm">
           <span className="text-5xl">📚</span>
-          <h3 className="mt-4 font-semibold text-gray-900">No courses yet</h3>
-          <p className="mt-1 text-sm text-gray-500">
-            Get started by adding your first course.
-          </p>
+          <h3 className="mt-4 font-semibold text-slate-900">No courses yet</h3>
+          <p className="mt-1 text-sm text-slate-600">Get started by adding your first course.</p>
           <button
             onClick={() => setCreateOpen(true)}
-            className="mt-4 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+            className="mt-4 flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all hover:brightness-105"
           >
             <Plus className="h-4 w-4" />
             Add your first course

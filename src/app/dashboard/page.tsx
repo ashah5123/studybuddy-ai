@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import {
   BookOpen,
   Calendar,
+  CalendarDays,
   CheckCircle2,
   Clock,
   MessageSquare,
@@ -19,9 +20,9 @@ import {
 import type { Profile } from '@/types/database.types'
 
 const PRIORITY_CLASSES = {
-  high: 'bg-red-100 text-red-700',
-  medium: 'bg-yellow-100 text-yellow-700',
-  low: 'bg-green-100 text-green-700',
+  high: 'bg-rose-50 text-rose-700 ring-1 ring-rose-200/80',
+  medium: 'bg-amber-50 text-amber-800 ring-1 ring-amber-200/80',
+  low: 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200/80',
 }
 
 function relativeDate(iso: string | null): string {
@@ -38,22 +39,30 @@ function StatCard({
   label,
   value,
   icon: Icon,
-  color,
+  blob,
+  iconClass,
 }: {
   label: string
   value: number | string
   icon: React.ElementType
-  color: string
+  blob: string
+  iconClass: string
 }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-5">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-gray-500">{label}</p>
-        <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${color}`}>
-          <Icon className="h-5 w-5" />
+    <div className="sb-panel group relative overflow-hidden p-5 transition-shadow hover:shadow-md">
+      <div
+        className={`pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-[0.2] blur-2xl ${blob}`}
+        aria-hidden
+      />
+      <div className="relative flex items-start justify-between gap-3">
+        <p className="text-sm font-medium text-slate-500">{label}</p>
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-200/80">
+          <Icon className={`h-5 w-5 ${iconClass}`} />
         </span>
       </div>
-      <p className="mt-3 text-3xl font-bold text-gray-900">{value}</p>
+      <p className="relative mt-3 text-3xl font-bold tabular-nums tracking-tight text-slate-900">
+        {value}
+      </p>
     </div>
   )
 }
@@ -77,79 +86,85 @@ export default async function DashboardPage() {
     getRecentStudySessions(user.id, 5),
   ])
 
-  const firstName = (profile as Pick<Profile, 'full_name'> | null)?.full_name?.split(' ')[0] ?? 'there'
+  const firstName =
+    (profile as Pick<Profile, 'full_name'> | null)?.full_name?.split(' ')[0] ?? 'there'
   const studyHours = (stats.studyMinutesThisWeek / 60).toFixed(1)
 
   return (
-    <div className="space-y-6">
-      {/* Welcome */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Good {getTimeOfDay()}, {firstName}! 👋
+    <div className="space-y-8">
+      <div className="rounded-2xl border border-indigo-200/60 bg-gradient-to-br from-indigo-50/90 via-white to-violet-50/50 px-5 py-6 shadow-sm sm:px-8 sm:py-7">
+        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600/90">
+          {getTimeOfDay()} overview
+        </p>
+        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          Hey {firstName}, ready to study?
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Here&apos;s what&apos;s happening with your studies today.
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
+          Here&apos;s a snapshot of your courses, deadlines, and recent focus time.
         </p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard
-          label="Total Courses"
+          label="Total courses"
           value={stats.totalCourses}
           icon={BookOpen}
-          color="bg-blue-100 text-blue-600"
+          blob="bg-indigo-500"
+          iconClass="text-indigo-600"
         />
         <StatCard
-          label="Active Assignments"
+          label="Active tasks"
           value={stats.activeAssignments}
           icon={Calendar}
-          color="bg-orange-100 text-orange-600"
+          blob="bg-amber-400"
+          iconClass="text-amber-600"
         />
         <StatCard
-          label="Completed This Week"
+          label="Done this week"
           value={stats.completedThisWeek}
           icon={CheckCircle2}
-          color="bg-green-100 text-green-600"
+          blob="bg-emerald-500"
+          iconClass="text-emerald-600"
         />
         <StatCard
-          label="Study Hours"
+          label="Study hours"
           value={studyHours}
           icon={Clock}
-          color="bg-purple-100 text-purple-600"
+          blob="bg-violet-500"
+          iconClass="text-violet-600"
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Upcoming deadlines */}
-        <div className="rounded-xl border border-gray-200 bg-white">
-          <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-            <h2 className="font-semibold text-gray-900">Upcoming Deadlines</h2>
+        <div className="sb-panel overflow-hidden">
+          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <h2 className="font-semibold text-slate-900">Upcoming deadlines</h2>
             <Link
               href="/dashboard/assignments"
-              className="text-xs font-medium text-blue-600 hover:text-blue-700"
+              className="text-xs font-semibold text-indigo-600 transition-colors hover:text-indigo-500"
             >
               View all
             </Link>
           </div>
-          <div className="divide-y divide-gray-50 p-2">
+          <div className="divide-y divide-slate-50 p-2">
             {upcoming.length === 0 ? (
-              <p className="px-3 py-8 text-center text-sm text-gray-400">
-                No upcoming deadlines — you&apos;re all caught up!
+              <p className="px-3 py-10 text-center text-sm text-slate-500">
+                Nothing due soon — nice work.
               </p>
             ) : (
               upcoming.map((a) => (
-                <div key={a.id} className="flex items-start gap-3 rounded-lg px-3 py-2.5">
+                <div
+                  key={a.id}
+                  className="flex items-start gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-slate-50/80"
+                >
                   <span
-                    className={`mt-0.5 rounded-full px-2 py-0.5 text-xs font-medium ${
-                      PRIORITY_CLASSES[a.priority]
-                    }`}
+                    className={`mt-0.5 rounded-lg px-2 py-0.5 text-xs font-semibold capitalize ${PRIORITY_CLASSES[a.priority]}`}
                   >
                     {a.priority}
                   </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium text-gray-900">{a.title}</p>
-                    <p className="text-xs text-gray-400">{relativeDate(a.due_date)}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-slate-900">{a.title}</p>
+                    <p className="text-xs text-slate-500">{relativeDate(a.due_date)}</p>
                   </div>
                 </div>
               ))
@@ -157,29 +172,31 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Recent study sessions */}
-        <div className="rounded-xl border border-gray-200 bg-white">
-          <div className="border-b border-gray-100 px-5 py-4">
-            <h2 className="font-semibold text-gray-900">Recent Study Sessions</h2>
+        <div className="sb-panel overflow-hidden">
+          <div className="border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <h2 className="font-semibold text-slate-900">Recent study sessions</h2>
           </div>
-          <div className="divide-y divide-gray-50 p-2">
+          <div className="divide-y divide-slate-50 p-2">
             {sessions.length === 0 ? (
-              <p className="px-3 py-8 text-center text-sm text-gray-400">
-                No sessions recorded yet. Start studying!
+              <p className="px-3 py-10 text-center text-sm text-slate-500">
+                No sessions logged yet. Start a focus block when you can.
               </p>
             ) : (
               sessions.map((s) => (
-                <div key={s.id} className="flex items-center gap-3 rounded-lg px-3 py-2.5">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+                <div
+                  key={s.id}
+                  className="flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-slate-50/80"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 ring-1 ring-violet-100">
                     <Clock className="h-4 w-4" />
                   </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium capitalize text-gray-900">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium capitalize text-slate-900">
                       {s.session_type}
                     </p>
-                    <p className="text-xs text-gray-400">{s.duration_minutes} min</p>
+                    <p className="text-xs text-slate-500">{s.duration_minutes} min</p>
                   </div>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs tabular-nums text-slate-400">
                     {new Date(s.created_at).toLocaleDateString()}
                   </span>
                 </div>
@@ -189,37 +206,43 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick actions */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5">
-        <h2 className="mb-4 font-semibold text-gray-900">Quick Actions</h2>
+      <div className="sb-panel p-6">
+        <h2 className="mb-4 font-semibold text-slate-900">Quick actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/dashboard/ai"
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all hover:brightness-105 hover:shadow-lg hover:shadow-indigo-500/20"
           >
             <MessageSquare className="h-4 w-4" />
-            Start AI Chat
+            AI chat
           </Link>
           <Link
             href="/dashboard/flashcards"
-            className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
-            <Zap className="h-4 w-4" />
-            Create Flashcards
+            <Zap className="h-4 w-4 text-amber-500" />
+            Flashcards
           </Link>
           <Link
             href="/dashboard/notes"
-            className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
-            <StickyNote className="h-4 w-4" />
-            Add Note
+            <StickyNote className="h-4 w-4 text-sky-600" />
+            Notes
           </Link>
           <Link
             href="/dashboard/assignments"
-            className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
-            <Plus className="h-4 w-4" />
-            New Assignment
+            <Plus className="h-4 w-4 text-indigo-600" />
+            Assignment
+          </Link>
+          <Link
+            href="/dashboard/schedule"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <CalendarDays className="h-4 w-4 text-violet-600" />
+            Schedule
           </Link>
         </div>
       </div>
@@ -229,7 +252,7 @@ export default async function DashboardPage() {
 
 function getTimeOfDay(): string {
   const hour = new Date().getHours()
-  if (hour < 12) return 'morning'
-  if (hour < 17) return 'afternoon'
-  return 'evening'
+  if (hour < 12) return 'Morning'
+  if (hour < 17) return 'Afternoon'
+  return 'Evening'
 }

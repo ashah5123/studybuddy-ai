@@ -87,8 +87,10 @@ export function CourseCard({
 
   const dueDateText = nextDue?.due_date
     ? (() => {
+        /* eslint-disable-next-line react-hooks/purity -- relative due date label */
+        const now = Date.now()
         const diff = Math.ceil(
-          (new Date(nextDue.due_date).getTime() - Date.now()) / 86_400_000
+          (new Date(nextDue.due_date).getTime() - now) / 86_400_000
         )
         if (diff < 0) return `${Math.abs(diff)}d overdue`
         if (diff === 0) return 'Due today'

@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
@@ -63,11 +64,82 @@ export async function signInWithGoogle(): Promise<{
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/auth/callback`,
       skipBrowserRedirect: true,
     },
   })
 
   if (error) return { error: error.message }
   return { url: data.url ?? undefined }
+}
+
+type MutationResult = { success: true; message?: string } | { success: false; error: string }
+
+export async function updateAccountProfile(input: {
+  fullName: string
+  bio: string
+}): Promise<MutationResult> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
+
+  const fullName = input.fullName.trim()
+  const bio = input.bio.trim()
+
+  if (!fullName) return { success: false, error: 'Full name is required' }
+  if (fullName.length > 120) return { success: false, error: 'Full name is too long' }
+  if (bio.length > 500) return { success: false, error: 'Bio must be 500 characters or less' }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      full_name: fullName,
+      bio: bio || null,
+    })
+    .eq('id', user.id)
+
+  if (error) return { success: false, error: error.message }
+
+  revalidatePath('/dashboard/settings')
+  revalidatePath('/dashboard')
+  return { success: true, message: 'Profile updated.' }
+}
+
+export async function updateAccountEmail(email: string): Promise<MutationResult> {
+  const supabase = await createClient()
+  const nextEmail = email.trim().toLowerCase()
+
+  if (!nextEmail) return { success: false, error: 'Email is required' }
+
+  const { error } = await supabase.auth.updateUser({
+    email: nextEmail,
+    data: { email: nextEmail },
+  })
+
+  if (error) return { success: false, error: error.message }
+  revalidatePath('/dashboard/settings')
+  return {
+    success: true,
+    message: 'Check your inbox to confirm the email change.',
+  }
+}
+
+export async function updateAccountPassword(
+  password: string,
+  confirmPassword: string
+): Promise<MutationResult> {
+  const supabase = await createClient()
+  if (password.length < 8) {
+    return { success: false, error: 'Password must be at least 8 characters.' }
+  }
+  if (password !== confirmPassword) {
+    return { success: false, error: 'Passwords do not match.' }
+  }
+
+  const { error } = await supabase.auth.updateUser({ password })
+  if (error) return { success: false, error: error.message }
+  return { success: true, message: 'Password updated.' }
 }

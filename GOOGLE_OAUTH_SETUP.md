@@ -71,6 +71,6 @@ It exchanges the auth code for a session and redirects to `/dashboard`. No addit
 
 ## 6. Local development checklist
 
-- [ ] `NEXT_PUBLIC_APP_URL=http://localhost:3000` set in `.env.local`
+- [ ] Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_APP_URL=http://localhost:3000` (and Supabase keys)
 - [ ] `http://localhost:3000/auth/callback` added to Google authorized redirect URIs
 - [ ] Google provider enabled in Supabase dashboard

@@ -26,8 +26,6 @@ export default function SignupPage() {
   async function onSubmit(data: SignupInput) {
     setServerError(null)
     const result = await signUp(data.email, data.password, data.fullName)
-    // signUp redirects on success when email confirmation is off;
-    // otherwise it returns { needsConfirmation: true }
     if (result?.error) {
       setServerError(result.error)
     } else if (result?.needsConfirmation) {
@@ -49,19 +47,19 @@ export default function SignupPage() {
 
   if (confirmation) {
     return (
-      <div className="flex flex-col items-center gap-4 py-4 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-          <CheckCircle2 className="h-7 w-7 text-green-600" />
+      <div className="flex flex-col items-center gap-5 py-2 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 ring-1 ring-emerald-100">
+          <CheckCircle2 className="h-8 w-8 text-emerald-600" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Check your email</h2>
-          <p className="mt-2 text-sm text-gray-500">
-            We sent you a confirmation link. Click it to activate your account and get started.
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">Check your email</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">
+            We sent a confirmation link. Open it to activate your account.
           </p>
         </div>
         <Link
           href="/login"
-          className="mt-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+          className="text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-500"
         >
           Back to sign in
         </Link>
@@ -72,21 +70,23 @@ export default function SignupPage() {
   return (
     <>
       <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
-        <p className="mt-1 text-sm text-gray-500">Start studying smarter today</p>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Create your account</h1>
+        <p className="mt-2 text-sm text-slate-600">Track courses, assignments, and AI help in one place</p>
       </div>
 
       {serverError && (
-        <div className="mb-4 flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+        <div
+          className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-200/90 bg-red-50/90 px-3.5 py-3 text-sm text-red-800 shadow-sm"
+          role="alert"
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
           <span>{serverError}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
-        {/* Full name */}
         <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="fullName" className="sb-label">
             Full name
           </label>
           <input
@@ -97,18 +97,17 @@ export default function SignupPage() {
             placeholder="Alex Johnson"
             aria-invalid={!!errors.fullName}
             aria-describedby={errors.fullName ? 'fullName-error' : undefined}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50"
+            className={`sb-input ${errors.fullName ? 'sb-input-error' : ''}`}
           />
           {errors.fullName && (
-            <p id="fullName-error" className="mt-1 text-xs text-red-600">
+            <p id="fullName-error" className="mt-1.5 text-xs font-medium text-red-600">
               {errors.fullName.message}
             </p>
           )}
         </div>
 
-        {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="sb-label">
             Email address
           </label>
           <input
@@ -119,18 +118,17 @@ export default function SignupPage() {
             placeholder="you@example.com"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? 'email-error' : undefined}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50"
+            className={`sb-input ${errors.email ? 'sb-input-error' : ''}`}
           />
           {errors.email && (
-            <p id="email-error" className="mt-1 text-xs text-red-600">
+            <p id="email-error" className="mt-1.5 text-xs font-medium text-red-600">
               {errors.email.message}
             </p>
           )}
         </div>
 
-        {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="sb-label">
             Password
           </label>
           <div className="relative">
@@ -139,30 +137,29 @@ export default function SignupPage() {
               id="password"
               type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
-              placeholder="Min. 8 characters"
+              placeholder="At least 8 characters"
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? 'password-error' : undefined}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50"
+              className={`sb-input pr-11 ${errors.password ? 'sb-input-error' : ''}`}
             />
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
           {errors.password && (
-            <p id="password-error" className="mt-1 text-xs text-red-600">
+            <p id="password-error" className="mt-1.5 text-xs font-medium text-red-600">
               {errors.password.message}
             </p>
           )}
         </div>
 
-        {/* Confirm password */}
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="confirmPassword" className="sb-label">
             Confirm password
           </label>
           <div className="relative">
@@ -174,47 +171,41 @@ export default function SignupPage() {
               placeholder="Repeat your password"
               aria-invalid={!!errors.confirmPassword}
               aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50"
+              className={`sb-input pr-11 ${errors.confirmPassword ? 'sb-input-error' : ''}`}
             />
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
               aria-label={showConfirm ? 'Hide password' : 'Show password'}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
             >
               {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
           {errors.confirmPassword && (
-            <p id="confirmPassword-error" className="mt-1 text-xs text-red-600">
+            <p id="confirmPassword-error" className="mt-1.5 text-xs font-medium text-red-600">
               {errors.confirmPassword.message}
             </p>
           )}
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-        >
+        <button type="submit" disabled={isSubmitting} className="sb-btn-primary">
           {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Creating account…' : 'Create account'}
         </button>
       </form>
 
-      {/* Divider */}
-      <div className="my-5 flex items-center gap-3">
-        <div className="h-px flex-1 bg-gray-200" />
-        <span className="text-xs text-gray-400">or</span>
-        <div className="h-px flex-1 bg-gray-200" />
+      <div className="my-6 flex items-center gap-3">
+        <div className="h-px flex-1 bg-slate-200" />
+        <span className="text-xs font-medium uppercase tracking-wide text-slate-400">or</span>
+        <div className="h-px flex-1 bg-slate-200" />
       </div>
 
-      {/* Google OAuth */}
       <button
         type="button"
         onClick={handleGoogleSignUp}
         disabled={googleLoading || isSubmitting}
-        className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+        className="sb-btn-secondary"
       >
         {googleLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -238,12 +229,15 @@ export default function SignupPage() {
             />
           </svg>
         )}
-        {googleLoading ? 'Redirecting…' : 'Sign up with Google'}
+        {googleLoading ? 'Redirecting…' : 'Continue with Google'}
       </button>
 
-      <p className="mt-6 text-center text-sm text-gray-500">
+      <p className="mt-8 text-center text-sm text-slate-600">
         Already have an account?{' '}
-        <Link href="/login" className="font-medium text-blue-600 hover:text-blue-700">
+        <Link
+          href="/login"
+          className="font-semibold text-indigo-600 transition-colors hover:text-indigo-500"
+        >
           Sign in
         </Link>
       </p>

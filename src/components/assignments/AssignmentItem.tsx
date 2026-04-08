@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Edit2, Trash2, Loader2, AlertCircle } from 'lucide-react'
+import { Trash2, Loader2, AlertCircle } from 'lucide-react'
 import { toggleAssignmentComplete, deleteAssignment } from '@/lib/supabase/mutations'
 import type { Assignment } from '@/types/database.types'
 
@@ -109,7 +109,7 @@ export function AssignmentItem({
           className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
             completed
               ? 'border-green-500 bg-green-500'
-              : 'border-gray-300 hover:border-blue-400'
+              : 'border-slate-300 hover:border-indigo-400'
           } ${toggling ? 'opacity-50 cursor-wait' : ''}`}
         >
           {completed && (

@@ -98,7 +98,7 @@ export function CreateCourseDialog({
             <input
               {...register('name')}
               placeholder="e.g. Calculus II"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="sb-input"
             />
             {errors.name && (
               <p className="mt-1 text-xs text-red-600">{errors.name.message}</p>

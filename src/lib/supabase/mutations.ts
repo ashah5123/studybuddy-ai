@@ -4,6 +4,9 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { courseSchema, assignmentSchema } from '@/lib/validations/courses'
 import type { CourseInput, AssignmentInput } from '@/lib/validations/courses'
+import { scheduleEventSchema } from '@/lib/validations/schedule'
+import type { ScheduleEventInput } from '@/lib/validations/schedule'
+import { plainTextToDoc } from '@/lib/tiptap/plainDoc'
 
 type MutationResult<T = undefined> =
   | { success: true; data?: T }
@@ -175,6 +178,220 @@ export async function toggleAssignmentComplete(
 
     if (error) return { success: false, error: error.message }
     revalidatePath('/dashboard/assignments')
+    revalidatePath('/dashboard')
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+// ── Notes ────────────────────────────────────────────────────
+
+export async function createNote(
+  title: string,
+  body: string
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const userId = await getAuthUserId()
+    const t = title.trim()
+    if (!t) return { success: false, error: 'Title is required' }
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('notes')
+      .insert({
+        user_id: userId,
+        title: t,
+        content: plainTextToDoc(body),
+        source: 'manual',
+        course_id: null,
+        video_url: null,
+      })
+      .select('id')
+      .single()
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/notes')
+    return { success: true, data: { id: data.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function deleteNote(noteId: string): Promise<MutationResult> {
+  try {
+    const userId = await getAuthUserId()
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from('notes')
+      .delete()
+      .eq('id', noteId)
+      .eq('user_id', userId)
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/notes')
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+// ── Flashcards ────────────────────────────────────────────────
+
+export async function createFlashcardDeck(
+  name: string,
+  description: string | null
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const userId = await getAuthUserId()
+    const n = name.trim()
+    if (!n) return { success: false, error: 'Deck name is required' }
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('flashcard_decks')
+      .insert({
+        user_id: userId,
+        name: n,
+        description: description?.trim() || null,
+        course_id: null,
+      })
+      .select('id')
+      .single()
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/flashcards')
+    return { success: true, data: { id: data.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function createFlashcard(
+  deckId: string,
+  question: string,
+  answer: string
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const userId = await getAuthUserId()
+    const q = question.trim()
+    const a = answer.trim()
+    if (!q || !a) return { success: false, error: 'Question and answer are required' }
+
+    const supabase = await createClient()
+    const { data: deck, error: deckErr } = await supabase
+      .from('flashcard_decks')
+      .select('id')
+      .eq('id', deckId)
+      .eq('user_id', userId)
+      .single()
+    if (deckErr || !deck) return { success: false, error: 'Deck not found' }
+
+    const now = new Date().toISOString()
+    const { data, error } = await supabase
+      .from('flashcards')
+      .insert({
+        deck_id: deckId,
+        question: q,
+        answer: a,
+        difficulty: 'medium',
+        next_review: now,
+        review_count: 0,
+        last_reviewed: null,
+      })
+      .select('id')
+      .single()
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/flashcards')
+    return { success: true, data: { id: data.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+// ── Schedule (calendar blocks) ───────────────────────────────
+
+export async function createScheduleEvent(
+  input: ScheduleEventInput
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const userId = await getAuthUserId()
+    const parsed = scheduleEventSchema.safeParse(input)
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+    }
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('schedule_events')
+      .insert({
+        user_id: userId,
+        title: parsed.data.title,
+        description: parsed.data.description?.trim() || null,
+        starts_at: parsed.data.starts_at,
+        ends_at: parsed.data.ends_at,
+        color: parsed.data.color,
+        course_id: parsed.data.course_id ?? null,
+      })
+      .select('id')
+      .single()
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/schedule')
+    revalidatePath('/dashboard')
+    return { success: true, data: { id: data.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function updateScheduleEvent(
+  eventId: string,
+  input: ScheduleEventInput
+): Promise<MutationResult> {
+  try {
+    const userId = await getAuthUserId()
+    const parsed = scheduleEventSchema.safeParse(input)
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+    }
+
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from('schedule_events')
+      .update({
+        title: parsed.data.title,
+        description: parsed.data.description?.trim() || null,
+        starts_at: parsed.data.starts_at,
+        ends_at: parsed.data.ends_at,
+        color: parsed.data.color,
+        course_id: parsed.data.course_id ?? null,
+      })
+      .eq('id', eventId)
+      .eq('user_id', userId)
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/schedule')
+    revalidatePath('/dashboard')
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function deleteScheduleEvent(eventId: string): Promise<MutationResult> {
+  try {
+    const userId = await getAuthUserId()
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from('schedule_events')
+      .delete()
+      .eq('id', eventId)
+      .eq('user_id', userId)
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/schedule')
     revalidatePath('/dashboard')
     return { success: true }
   } catch (e) {

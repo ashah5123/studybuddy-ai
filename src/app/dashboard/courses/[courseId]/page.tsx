@@ -81,7 +81,7 @@ export default async function CourseDetailPage({
       </div>
 
       {/* Tabs (client component for interactivity) */}
-      <CourseDetailTabs courseId={courseId} assignments={assignments} />
+      <CourseDetailTabs assignments={assignments} />
     </div>
   )
 }

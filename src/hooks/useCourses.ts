@@ -41,7 +41,9 @@ export function useCourses(): UseCoursesReturn {
   }, [])
 
   useEffect(() => {
-    fetchCourses()
+    queueMicrotask(() => {
+      void fetchCourses()
+    })
   }, [fetchCourses])
 
   return { courses, loading, error, refetch: fetchCourses }

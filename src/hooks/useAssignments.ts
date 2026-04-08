@@ -50,10 +50,12 @@ export function useAssignments(
     if (queryError) setError(new Error(queryError.message))
     else setAssignments(data ?? [])
     setLoading(false)
-  }, [filters.courseId, filters.completed]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filters.courseId, filters.completed])
 
   useEffect(() => {
-    fetchAssignments()
+    queueMicrotask(() => {
+      void fetchAssignments()
+    })
   }, [fetchAssignments])
 
   return { assignments, loading, error, refetch: fetchAssignments }

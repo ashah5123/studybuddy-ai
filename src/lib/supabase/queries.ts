@@ -1,5 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Assignment, Course, StudySession } from '@/types/database.types'
+import type {
+  Assignment,
+  Course,
+  FlashcardDeck,
+  Note,
+  StudySession,
+} from '@/types/database.types'
 
 export async function getCourses(userId: string): Promise<Course[]> {
   const supabase = await createClient()
@@ -100,6 +106,47 @@ export interface UserStats {
   activeAssignments: number
   completedThisWeek: number
   studyMinutesThisWeek: number
+}
+
+export async function getNotes(userId: string): Promise<Note[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data ?? []
+}
+
+export async function getFlashcardDecks(userId: string): Promise<
+  (FlashcardDeck & { card_count: number })[]
+> {
+  const supabase = await createClient()
+  const { data: decks, error: deckErr } = await supabase
+    .from('flashcard_decks')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false })
+  if (deckErr) throw new Error(deckErr.message)
+  if (!decks?.length) return []
+
+  const ids = decks.map((d) => d.id)
+  const { data: rows, error: countErr } = await supabase
+    .from('flashcards')
+    .select('deck_id')
+    .in('deck_id', ids)
+  if (countErr) throw new Error(countErr.message)
+
+  const countMap = (rows ?? []).reduce<Record<string, number>>((acc, row) => {
+    acc[row.deck_id] = (acc[row.deck_id] ?? 0) + 1
+    return acc
+  }, {})
+
+  return decks.map((d) => ({
+    ...d,
+    card_count: countMap[d.id] ?? 0,
+  }))
 }
 
 export async function getUserStats(userId: string): Promise<UserStats> {

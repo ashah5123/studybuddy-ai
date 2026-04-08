@@ -44,9 +44,10 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
+  const isApiRoute = pathname.startsWith('/api/')
 
-  // Redirect unauthenticated users away from protected routes.
-  if (!user && !isPublicRoute) {
+  // Redirect unauthenticated users away from protected routes (not API — handlers return 401 JSON).
+  if (!user && !isPublicRoute && !isApiRoute) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
     return NextResponse.redirect(loginUrl)

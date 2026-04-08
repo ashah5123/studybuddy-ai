@@ -62,6 +62,7 @@ export default function AssignmentsPage() {
   }, [assignments, tab, search])
 
   const tabCounts = useMemo(() => {
+    // eslint-disable-next-line react-hooks/purity -- tab badge counts vs "now"
     const now = Date.now()
     return {
       all: assignments.length,
@@ -78,14 +79,19 @@ export default function AssignmentsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Assignments</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600/90">
+            Due dates
+          </p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            Assignments
+          </h1>
+          <p className="mt-2 text-sm text-slate-600">
             {assignments.length} total · {tabCounts.pending} pending
           </p>
         </div>
         <button
           onClick={() => setCreateOpen(true)}
-          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all hover:brightness-105"
         >
           <Plus className="h-4 w-4" />
           New Assignment
@@ -93,25 +99,24 @@ export default function AssignmentsPage() {
       </div>
 
       {/* Search + tabs */}
-      <div className="rounded-xl border border-gray-200 bg-white">
-        <div className="border-b border-gray-200 px-4">
+      <div className="sb-panel overflow-hidden">
+        <div className="border-b border-slate-100 px-4">
           <div className="flex gap-1">
             {TABS.map(({ key, label }) => (
               <button
                 key={key}
+                type="button"
                 onClick={() => setTab(key)}
-                className={`flex items-center gap-1.5 px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
+                className={`flex items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
                   tab === key
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                    ? 'border-indigo-600 text-indigo-700'
+                    : 'border-transparent text-slate-500 hover:text-slate-800  '
                 }`}
               >
                 {label}
                 <span
-                  className={`rounded-full px-1.5 py-0.5 text-xs ${
-                    tab === key
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-gray-100 text-gray-500'
+                  className={`rounded-full px-1.5 py-0.5 text-xs font-semibold tabular-nums ${
+                    tab === key ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   {tabCounts[key]}
@@ -126,23 +131,23 @@ export default function AssignmentsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search assignments…"
-            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="sb-input"
           />
         </div>
 
         {/* Error */}
         {error && (
-          <div className="mx-4 mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          <div className="mx-4 mb-4 rounded-xl border border-red-200/90 bg-red-50 p-3 text-sm text-red-800">
             {error.message}
           </div>
         )}
 
         {/* List */}
-        <div className="divide-y divide-gray-50 px-4 pb-4">
+        <div className="divide-y divide-slate-50 px-4 pb-4">
           {loading && [1, 2, 3].map((i) => <SkeletonItem key={i} />)}
 
           {!loading && filtered.length === 0 && (
-            <p className="py-12 text-center text-sm text-gray-400">
+            <p className="py-12 text-center text-sm text-slate-500">
               {search ? 'No assignments match your search.' : 'No assignments here.'}
             </p>
           )}

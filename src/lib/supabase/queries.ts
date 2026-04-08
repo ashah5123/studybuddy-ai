@@ -6,6 +6,8 @@ import type {
   FlashcardDeck,
   Message,
   Note,
+  StudyPlan,
+  StudyPlanTask,
   StudySession,
 } from '@/types/database.types'
 
@@ -253,4 +255,26 @@ export async function getActiveConversation(
     conversation: conversation as Conversation,
     messages: (messages as Message[]) ?? [],
   }
+}
+
+export async function getStudyPlans(userId: string): Promise<StudyPlan[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('study_plans')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return (data as StudyPlan[]) ?? []
+}
+
+export async function getStudyPlanTasks(planId: string): Promise<StudyPlanTask[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('study_plan_tasks')
+    .select('*')
+    .eq('plan_id', planId)
+    .order('date', { ascending: true })
+  if (error) throw new Error(error.message)
+  return (data as StudyPlanTask[]) ?? []
 }

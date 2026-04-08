@@ -490,3 +490,91 @@ export async function deleteConversation(
     return { success: false, error: String(e) }
   }
 }
+
+// ── Study plans ──────────────────────────────────────────────
+
+export async function createStudyPlan(
+  title: string,
+  startDate: string,
+  endDate: string,
+  tasks: Array<{
+    date: string
+    courseId: string | null
+    topic: string
+    durationMinutes: number
+    priority: 'low' | 'medium' | 'high'
+  }>
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const userId = await getAuthUserId()
+    const supabase = await createClient()
+    const { data: plan, error: planErr } = await supabase
+      .from('study_plans')
+      .insert({
+        user_id: userId,
+        title: title.trim() || 'AI Study Plan',
+        start_date: startDate,
+        end_date: endDate,
+      })
+      .select('id')
+      .single()
+    if (planErr || !plan) return { success: false, error: planErr?.message ?? 'Plan creation failed' }
+
+    if (tasks.length > 0) {
+      const { error: taskErr } = await supabase.from('study_plan_tasks').insert(
+        tasks.map((t) => ({
+          plan_id: plan.id,
+          date: t.date,
+          course_id: t.courseId,
+          topic: t.topic,
+          duration_minutes: t.durationMinutes,
+          priority: t.priority,
+        }))
+      )
+      if (taskErr) return { success: false, error: taskErr.message }
+    }
+
+    revalidatePath('/dashboard/study-planner')
+    revalidatePath('/dashboard/study-planner/analytics')
+    return { success: true, data: { id: plan.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function toggleStudyPlanTaskComplete(
+  taskId: string,
+  completed: boolean
+): Promise<MutationResult> {
+  try {
+    const userId = await getAuthUserId()
+    const supabase = await createClient()
+
+    const { data: task } = await supabase
+      .from('study_plan_tasks')
+      .select('id, plan_id')
+      .eq('id', taskId)
+      .single()
+    if (!task) return { success: false, error: 'Task not found' }
+
+    const { data: plan } = await supabase
+      .from('study_plans')
+      .select('id')
+      .eq('id', task.plan_id)
+      .eq('user_id', userId)
+      .single()
+    if (!plan) return { success: false, error: 'Unauthorized' }
+
+    const { error } = await supabase
+      .from('study_plan_tasks')
+      .update({ completed })
+      .eq('id', taskId)
+    if (error) return { success: false, error: error.message }
+
+    revalidatePath('/dashboard/study-planner')
+    revalidatePath('/dashboard/study-planner/analytics')
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}

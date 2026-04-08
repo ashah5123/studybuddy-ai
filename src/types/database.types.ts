@@ -140,6 +140,29 @@ export interface ScheduleEvent {
   updated_at: string
 }
 
+export interface StudyPlan {
+  id: string
+  user_id: string
+  title: string
+  start_date: string
+  end_date: string
+  created_at: string
+  updated_at: string
+}
+
+export interface StudyPlanTask {
+  id: string
+  plan_id: string
+  date: string
+  course_id: string | null
+  topic: string
+  duration_minutes: number
+  completed: boolean
+  priority: Priority
+  created_at: string
+  updated_at: string
+}
+
 // ──────────────────────────────────────────────────────────────
 // Database row / enum types for the app (Supabase table shapes).
 // The Supabase client is intentionally untyped at the generic level so

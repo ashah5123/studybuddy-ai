@@ -79,13 +79,13 @@ export default function AssignmentsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600/90">
+          <p className="text-xs font-semibold uppercase tracking-widest text-[var(--sb-muted)]">
             Due dates
           </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
             Assignments
           </h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-[var(--sb-muted)]">
             {assignments.length} total · {tabCounts.pending} pending
           </p>
         </div>

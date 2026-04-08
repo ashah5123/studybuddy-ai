@@ -20,9 +20,9 @@ import {
 import type { Profile } from '@/types/database.types'
 
 const PRIORITY_CLASSES = {
-  high: 'bg-rose-50 text-rose-700 ring-1 ring-rose-200/80',
-  medium: 'bg-amber-50 text-amber-800 ring-1 ring-amber-200/80',
-  low: 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200/80',
+  high: 'bg-rose-500/10 text-rose-200 ring-1 ring-rose-500/20',
+  medium: 'bg-amber-500/10 text-amber-200 ring-1 ring-amber-500/20',
+  low: 'bg-emerald-500/10 text-emerald-200 ring-1 ring-emerald-500/20',
 }
 
 function relativeDate(iso: string | null): string {
@@ -55,12 +55,12 @@ function StatCard({
         aria-hidden
       />
       <div className="relative flex items-start justify-between gap-3">
-        <p className="text-sm font-medium text-slate-500">{label}</p>
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-200/80">
+        <p className="text-sm font-medium text-[var(--sb-muted)]">{label}</p>
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 shadow-sm ring-1 ring-white/10">
           <Icon className={`h-5 w-5 ${iconClass}`} />
         </span>
       </div>
-      <p className="relative mt-3 text-3xl font-bold tabular-nums tracking-tight text-slate-900">
+      <p className="relative mt-3 text-3xl font-bold tabular-nums tracking-tight text-[var(--foreground)]">
         {value}
       </p>
     </div>
@@ -92,14 +92,14 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-2xl border border-indigo-200/60 bg-gradient-to-br from-indigo-50/90 via-white to-violet-50/50 px-5 py-6 shadow-sm sm:px-8 sm:py-7">
-        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600/90">
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-white/0 px-5 py-6 shadow-sm shadow-black/20 sm:px-8 sm:py-7">
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--sb-muted)]">
           {getTimeOfDay()} overview
         </p>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+        <h1 className="mt-1 text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
           Hey {firstName}, ready to study?
         </h1>
-        <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--sb-muted)]">
           Here&apos;s a snapshot of your courses, deadlines, and recent focus time.
         </p>
       </div>
@@ -137,25 +137,25 @@ export default async function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="sb-panel overflow-hidden">
-          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <h2 className="font-semibold text-slate-900">Upcoming deadlines</h2>
+          <div className="flex items-center justify-between border-b border-white/10 bg-white/5 px-5 py-4">
+            <h2 className="font-semibold text-[var(--foreground)]">Upcoming deadlines</h2>
             <Link
               href="/dashboard/assignments"
-              className="text-xs font-semibold text-indigo-600 transition-colors hover:text-indigo-500"
+              className="text-xs font-semibold text-[var(--sb-accent)] transition-colors hover:text-[var(--sb-accent-muted)]"
             >
               View all
             </Link>
           </div>
-          <div className="divide-y divide-slate-50 p-2">
+          <div className="divide-y divide-white/5 p-2">
             {upcoming.length === 0 ? (
-              <p className="px-3 py-10 text-center text-sm text-slate-500">
+              <p className="px-3 py-10 text-center text-sm text-[var(--sb-muted)]">
                 Nothing due soon — nice work.
               </p>
             ) : (
               upcoming.map((a) => (
                 <div
                   key={a.id}
-                  className="flex items-start gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-slate-50/80"
+                  className="flex items-start gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-white/5"
                 >
                   <span
                     className={`mt-0.5 rounded-lg px-2 py-0.5 text-xs font-semibold capitalize ${PRIORITY_CLASSES[a.priority]}`}
@@ -163,8 +163,8 @@ export default async function DashboardPage() {
                     {a.priority}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-slate-900">{a.title}</p>
-                    <p className="text-xs text-slate-500">{relativeDate(a.due_date)}</p>
+                    <p className="truncate text-sm font-medium text-[var(--foreground)]">{a.title}</p>
+                    <p className="text-xs text-[var(--sb-muted)]">{relativeDate(a.due_date)}</p>
                   </div>
                 </div>
               ))
@@ -173,30 +173,30 @@ export default async function DashboardPage() {
         </div>
 
         <div className="sb-panel overflow-hidden">
-          <div className="border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <h2 className="font-semibold text-slate-900">Recent study sessions</h2>
+          <div className="border-b border-white/10 bg-white/5 px-5 py-4">
+            <h2 className="font-semibold text-[var(--foreground)]">Recent study sessions</h2>
           </div>
-          <div className="divide-y divide-slate-50 p-2">
+          <div className="divide-y divide-white/5 p-2">
             {sessions.length === 0 ? (
-              <p className="px-3 py-10 text-center text-sm text-slate-500">
+              <p className="px-3 py-10 text-center text-sm text-[var(--sb-muted)]">
                 No sessions logged yet. Start a focus block when you can.
               </p>
             ) : (
               sessions.map((s) => (
                 <div
                   key={s.id}
-                  className="flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-slate-50/80"
+                  className="flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-white/5"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 ring-1 ring-violet-100">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-200 ring-1 ring-violet-500/20">
                     <Clock className="h-4 w-4" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium capitalize text-slate-900">
+                    <p className="text-sm font-medium capitalize text-[var(--foreground)]">
                       {s.session_type}
                     </p>
-                    <p className="text-xs text-slate-500">{s.duration_minutes} min</p>
+                    <p className="text-xs text-[var(--sb-muted)]">{s.duration_minutes} min</p>
                   </div>
-                  <span className="text-xs tabular-nums text-slate-400">
+                  <span className="text-xs tabular-nums text-[rgba(148,163,184,0.85)]">
                     {new Date(s.created_at).toLocaleDateString()}
                   </span>
                 </div>
@@ -207,10 +207,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="sb-panel p-6">
-        <h2 className="mb-4 font-semibold text-slate-900">Quick actions</h2>
+        <h2 className="mb-4 font-semibold text-[var(--foreground)]">Quick actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link
-            href="/dashboard/ai"
+            href="/dashboard/ai-helper"
             className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all hover:brightness-105 hover:shadow-lg hover:shadow-indigo-500/20"
           >
             <MessageSquare className="h-4 w-4" />
@@ -218,28 +218,28 @@ export default async function DashboardPage() {
           </Link>
           <Link
             href="/dashboard/flashcards"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] shadow-sm transition-colors hover:bg-white/10"
           >
             <Zap className="h-4 w-4 text-amber-500" />
             Flashcards
           </Link>
           <Link
             href="/dashboard/notes"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] shadow-sm transition-colors hover:bg-white/10"
           >
             <StickyNote className="h-4 w-4 text-sky-600" />
             Notes
           </Link>
           <Link
             href="/dashboard/assignments"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] shadow-sm transition-colors hover:bg-white/10"
           >
             <Plus className="h-4 w-4 text-indigo-600" />
             Assignment
           </Link>
           <Link
             href="/dashboard/schedule"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] shadow-sm transition-colors hover:bg-white/10"
           >
             <CalendarDays className="h-4 w-4 text-violet-600" />
             Schedule

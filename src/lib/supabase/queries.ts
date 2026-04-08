@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import type {
   Assignment,
+  Conversation,
   Course,
   FlashcardDeck,
+  Message,
   Note,
   StudySession,
 } from '@/types/database.types'
@@ -185,5 +187,70 @@ export async function getUserStats(userId: string): Promise<UserStats> {
     activeAssignments: active.count ?? 0,
     completedThisWeek: completedWeek.count ?? 0,
     studyMinutesThisWeek: studyMinutes,
+  }
+}
+
+export async function getConversationHistory(
+  userId: string,
+  limit = 20
+): Promise<Conversation[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false })
+    .limit(limit)
+
+  if (error) throw new Error(error.message)
+  return (data as Conversation[]) ?? []
+}
+
+export async function getRecentNotesBySubject(
+  userId: string,
+  subject?: string,
+  limit = 8
+): Promise<Note[]> {
+  const supabase = await createClient()
+  let query = supabase
+    .from('notes')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false })
+    .limit(limit)
+
+  const normalized = subject?.trim()
+  if (normalized) {
+    query = query.ilike('title', `%${normalized}%`)
+  }
+
+  const { data, error } = await query
+  if (error) throw new Error(error.message)
+  return (data as Note[]) ?? []
+}
+
+export async function getActiveConversation(
+  conversationId: string
+): Promise<{ conversation: Conversation; messages: Message[] } | null> {
+  const supabase = await createClient()
+  const { data: conversation, error: convErr } = await supabase
+    .from('conversations')
+    .select('*')
+    .eq('id', conversationId)
+    .single()
+
+  if (convErr || !conversation) return null
+
+  const { data: messages, error: msgErr } = await supabase
+    .from('messages')
+    .select('*')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: true })
+
+  if (msgErr) throw new Error(msgErr.message)
+
+  return {
+    conversation: conversation as Conversation,
+    messages: (messages as Message[]) ?? [],
   }
 }

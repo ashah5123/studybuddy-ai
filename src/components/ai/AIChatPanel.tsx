@@ -114,10 +114,10 @@ export function AIChatPanel() {
         <div className="space-y-4">
           {messages.length === 0 && (
             <div className="flex flex-col items-center gap-3 py-12 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-[var(--sb-accent)] ring-1 ring-white/10">
                 <Sparkles className="h-6 w-6" />
               </span>
-              <p className="max-w-sm text-sm leading-relaxed text-slate-600">
+              <p className="max-w-sm text-sm leading-relaxed text-[var(--sb-muted)]">
                 Ask anything — or attach a photo of a problem, diagram, or notes. The tutor answers from
                 what you type and what it sees in your images.
               </p>
@@ -132,7 +132,7 @@ export function AIChatPanel() {
                 className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap shadow-sm sm:max-w-[85%] ${
                   m.role === 'user'
                     ? 'rounded-br-md bg-gradient-to-br from-indigo-600 to-violet-600 text-white'
-                    : 'rounded-bl-md border border-slate-100 bg-slate-50 text-slate-900'
+                    : 'rounded-bl-md border border-white/10 bg-white/5 text-[var(--foreground)]'
                 }`}
               >
                 {m.role === 'user' && m.images && m.images.length > 0 && (
@@ -160,7 +160,7 @@ export function AIChatPanel() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-slate-100 bg-slate-50 px-4 py-3 text-sm text-slate-500">
+              <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-[var(--sb-muted)]">
                 <Loader2 className="h-4 w-4 animate-spin text-indigo-500" />
                 Thinking…
               </div>
@@ -177,7 +177,7 @@ export function AIChatPanel() {
       )}
 
       {pendingImages.length > 0 && (
-        <div className="flex flex-wrap gap-2 border-t border-slate-100 bg-slate-50/80 px-3 py-2 sm:px-4">
+        <div className="flex flex-wrap gap-2 border-t border-white/10 bg-white/5 px-3 py-2 sm:px-4">
           {pendingImages.map((src, i) => (
             <div key={i} className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -215,7 +215,7 @@ export function AIChatPanel() {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={loading || pendingImages.length >= MAX_PENDING_IMAGES}
-          className="flex h-11 w-11 shrink-0 items-center justify-center self-end rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:border-indigo-200 hover:bg-indigo-50/80 hover:text-indigo-700 disabled:cursor-not-allowed disabled:opacity-45"
+          className="flex h-11 w-11 shrink-0 items-center justify-center self-end rounded-xl border border-white/10 bg-white/5 text-[rgba(226,232,240,0.9)] shadow-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-45"
           aria-label="Attach images"
         >
           <ImagePlus className="h-5 w-5" />

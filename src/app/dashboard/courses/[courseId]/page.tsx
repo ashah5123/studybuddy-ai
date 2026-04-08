@@ -34,12 +34,12 @@ export default async function CourseDetailPage({
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-gray-500">
-        <Link href="/dashboard" className="hover:text-gray-900">Dashboard</Link>
+      <div className="flex items-center gap-2 text-sm text-[var(--sb-muted)]">
+        <Link href="/dashboard" className="hover:text-[var(--foreground)]">Dashboard</Link>
         <span>/</span>
-        <Link href="/dashboard/courses" className="hover:text-gray-900">Courses</Link>
+        <Link href="/dashboard/courses" className="hover:text-[var(--foreground)]">Courses</Link>
         <span>/</span>
-        <span className="text-gray-900 font-medium">{course.name}</span>
+        <span className="text-[var(--foreground)] font-medium">{course.name}</span>
       </div>
 
       {/* Course header */}
@@ -47,7 +47,7 @@ export default async function CourseDetailPage({
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard/courses"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[rgba(226,232,240,0.9)] hover:bg-white/10"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
@@ -58,8 +58,8 @@ export default async function CourseDetailPage({
             {course.emoji}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{course.name}</h1>
-            <p className="text-sm text-gray-500">
+            <h1 className="text-2xl font-bold text-[var(--foreground)]">{course.name}</h1>
+            <p className="text-sm text-[var(--sb-muted)]">
               {assignments.length} assignments · {completionPct}% complete
             </p>
           </div>
@@ -73,9 +73,9 @@ export default async function CourseDetailPage({
           { label: 'Completed', value: completedCount },
           { label: 'Remaining', value: assignments.length - completedCount },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-xl border border-gray-200 bg-white p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{value}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+          <div key={label} className="rounded-xl border border-white/10 bg-white/5 p-4 text-center">
+            <p className="text-2xl font-bold text-[var(--foreground)]">{value}</p>
+            <p className="text-xs text-[var(--sb-muted)] mt-0.5">{label}</p>
           </div>
         ))}
       </div>

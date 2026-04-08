@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { X } from 'lucide-react'
 import {
   createScheduleEvent,
@@ -51,39 +51,40 @@ export function ScheduleEventDialog({
   courses,
   onSaved,
 }: ScheduleEventDialogProps) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [startLocal, setStartLocal] = useState('')
-  const [endLocal, setEndLocal] = useState('')
-  const [color, setColor] = useState(COLOR_PRESETS[0])
-  const [courseId, setCourseId] = useState<string>('')
+  const initial = (() => {
+    if (editing) {
+      return {
+        title: editing.title,
+        description: editing.description ?? '',
+        startLocal: toDatetimeLocalValue(editing.starts_at),
+        endLocal: toDatetimeLocalValue(editing.ends_at),
+        color: editing.color,
+        courseId: editing.course_id ?? '',
+      }
+    }
+    const s = new Date(anchorDay)
+    s.setHours(9, 0, 0, 0)
+    const e = new Date(anchorDay)
+    e.setHours(10, 0, 0, 0)
+    return {
+      title: '',
+      description: '',
+      startLocal: toDatetimeLocalValue(s.toISOString()),
+      endLocal: toDatetimeLocalValue(e.toISOString()),
+      color: COLOR_PRESETS[0],
+      courseId: '',
+    }
+  })()
+
+  const [title, setTitle] = useState(initial.title)
+  const [description, setDescription] = useState(initial.description)
+  const [startLocal, setStartLocal] = useState(initial.startLocal)
+  const [endLocal, setEndLocal] = useState(initial.endLocal)
+  const [color, setColor] = useState(initial.color)
+  const [courseId, setCourseId] = useState<string>(initial.courseId)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!open) return
-    setFormError(null)
-    if (editing) {
-      setTitle(editing.title)
-      setDescription(editing.description ?? '')
-      setStartLocal(toDatetimeLocalValue(editing.starts_at))
-      setEndLocal(toDatetimeLocalValue(editing.ends_at))
-      setColor(editing.color)
-      setCourseId(editing.course_id ?? '')
-    } else {
-      const s = new Date(anchorDay)
-      s.setHours(9, 0, 0, 0)
-      const e = new Date(anchorDay)
-      e.setHours(10, 0, 0, 0)
-      setTitle('')
-      setDescription('')
-      setStartLocal(toDatetimeLocalValue(s.toISOString()))
-      setEndLocal(toDatetimeLocalValue(e.toISOString()))
-      setColor(COLOR_PRESETS[0])
-      setCourseId('')
-    }
-  }, [open, editing, anchorDay])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

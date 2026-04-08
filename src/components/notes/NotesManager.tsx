@@ -50,9 +50,9 @@ export function NotesManager({ initialNotes }: { initialNotes: Note[] }) {
   return (
     <div className="space-y-6">
       <form onSubmit={handleCreate} className="sb-panel space-y-4 p-6">
-        <h2 className="font-semibold text-slate-900">New note</h2>
+        <h2 className="font-semibold text-[var(--foreground)]">New note</h2>
         {error && (
-          <div className="rounded-xl border border-red-200/90 bg-red-50 px-3.5 py-2.5 text-sm text-red-800">
+          <div className="rounded-xl border border-rose-500/25 bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-200">
             {error}
           </div>
         )}
@@ -89,13 +89,13 @@ export function NotesManager({ initialNotes }: { initialNotes: Note[] }) {
       </form>
 
       <div className="sb-panel overflow-hidden">
-        <div className="border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-          <h2 className="font-semibold text-slate-900">Your notes</h2>
-          <p className="mt-0.5 text-xs text-slate-500">{notes.length} saved</p>
+        <div className="border-b border-white/10 bg-white/5 px-5 py-4">
+          <h2 className="font-semibold text-[var(--foreground)]">Your notes</h2>
+          <p className="mt-0.5 text-xs text-[var(--sb-muted)]">{notes.length} saved</p>
         </div>
-        <ul className="divide-y divide-slate-50">
+        <ul className="divide-y divide-white/5">
           {notes.length === 0 && (
-            <li className="px-5 py-12 text-center text-sm text-slate-500">No notes yet.</li>
+            <li className="px-5 py-12 text-center text-sm text-[var(--sb-muted)]">No notes yet.</li>
           )}
           {notes.map((note) => {
             const preview = docToPlainPreview(
@@ -104,14 +104,14 @@ export function NotesManager({ initialNotes }: { initialNotes: Note[] }) {
             return (
               <li
                 key={note.id}
-                className="flex gap-3 px-5 py-4 transition-colors hover:bg-slate-50/80"
+                className="flex gap-3 px-5 py-4 transition-colors hover:bg-white/5"
               >
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium text-slate-900">{note.title}</p>
+                  <p className="font-medium text-[var(--foreground)]">{note.title}</p>
                   {preview && (
-                    <p className="mt-1 line-clamp-2 text-sm text-slate-600">{preview}</p>
+                    <p className="mt-1 line-clamp-2 text-sm text-[var(--sb-muted)]">{preview}</p>
                   )}
-                  <p className="mt-2 text-xs text-slate-400">
+                  <p className="mt-2 text-xs text-[rgba(148,163,184,0.85)]">
                     Updated {new Date(note.updated_at).toLocaleString()}
                   </p>
                 </div>

@@ -48,18 +48,20 @@ export default function SignupPage() {
   if (confirmation) {
     return (
       <div className="flex flex-col items-center gap-5 py-2 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 ring-1 ring-emerald-100">
-          <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
+          <CheckCircle2 className="h-8 w-8 text-emerald-300" />
         </div>
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900">Check your email</h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
+            Check your email
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--sb-muted)]">
             We sent a confirmation link. Open it to activate your account.
           </p>
         </div>
         <Link
           href="/login"
-          className="text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-500"
+          className="text-sm font-semibold text-[var(--sb-accent)] transition-colors hover:text-[var(--sb-accent-muted)]"
         >
           Back to sign in
         </Link>
@@ -70,16 +72,20 @@ export default function SignupPage() {
   return (
     <>
       <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Create your account</h1>
-        <p className="mt-2 text-sm text-slate-600">Track courses, assignments, and AI help in one place</p>
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
+          Create your account
+        </h1>
+        <p className="mt-2 text-sm text-[var(--sb-muted)]">
+          Track courses, assignments, and AI help in one place
+        </p>
       </div>
 
       {serverError && (
         <div
-          className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-200/90 bg-red-50/90 px-3.5 py-3 text-sm text-red-800 shadow-sm"
+          className="mb-5 flex items-start gap-2.5 rounded-xl border border-rose-500/25 bg-rose-500/10 px-3.5 py-3 text-sm text-rose-200 shadow-sm"
           role="alert"
         >
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-300" />
           <span>{serverError}</span>
         </div>
       )}
@@ -146,7 +152,7 @@ export default function SignupPage() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-[rgba(148,163,184,0.85)] transition-colors hover:bg-white/10 hover:text-[var(--foreground)]"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -177,7 +183,7 @@ export default function SignupPage() {
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
               aria-label={showConfirm ? 'Hide password' : 'Show password'}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-[rgba(148,163,184,0.85)] transition-colors hover:bg-white/10 hover:text-[var(--foreground)]"
             >
               {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -196,9 +202,11 @@ export default function SignupPage() {
       </form>
 
       <div className="my-6 flex items-center gap-3">
-        <div className="h-px flex-1 bg-slate-200" />
-        <span className="text-xs font-medium uppercase tracking-wide text-slate-400">or</span>
-        <div className="h-px flex-1 bg-slate-200" />
+        <div className="h-px flex-1 bg-white/10" />
+        <span className="text-xs font-medium uppercase tracking-wide text-[rgba(148,163,184,0.85)]">
+          or
+        </span>
+        <div className="h-px flex-1 bg-white/10" />
       </div>
 
       <button
@@ -232,11 +240,11 @@ export default function SignupPage() {
         {googleLoading ? 'Redirecting…' : 'Continue with Google'}
       </button>
 
-      <p className="mt-8 text-center text-sm text-slate-600">
+      <p className="mt-8 text-center text-sm text-[var(--sb-muted)]">
         Already have an account?{' '}
         <Link
           href="/login"
-          className="font-semibold text-indigo-600 transition-colors hover:text-indigo-500"
+          className="font-semibold text-[var(--sb-accent)] transition-colors hover:text-[var(--sb-accent-muted)]"
         >
           Sign in
         </Link>

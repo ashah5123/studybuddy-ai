@@ -398,3 +398,95 @@ export async function deleteScheduleEvent(eventId: string): Promise<MutationResu
     return { success: false, error: String(e) }
   }
 }
+
+// ── AI conversations ─────────────────────────────────────────
+
+export async function createConversation(
+  userId: string,
+  title: string,
+  subject: string | null
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const authUserId = await getAuthUserId()
+    if (authUserId !== userId) return { success: false, error: 'Unauthorized' }
+
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('conversations')
+      .insert({
+        user_id: authUserId,
+        title: title.trim() || 'New chat',
+        subject: subject?.trim() || null,
+      })
+      .select('id')
+      .single()
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/ai-helper')
+    return { success: true, data: { id: data.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function addMessage(
+  conversationId: string,
+  role: 'user' | 'assistant',
+  content: string
+): Promise<MutationResult<{ id: string }>> {
+  try {
+    const authUserId = await getAuthUserId()
+    const supabase = await createClient()
+
+    const { data: conversation, error: convErr } = await supabase
+      .from('conversations')
+      .select('id')
+      .eq('id', conversationId)
+      .eq('user_id', authUserId)
+      .single()
+
+    if (convErr || !conversation) return { success: false, error: 'Conversation not found' }
+
+    const { data, error } = await supabase
+      .from('messages')
+      .insert({
+        conversation_id: conversationId,
+        role,
+        content: content.trim(),
+      })
+      .select('id')
+      .single()
+
+    if (error) return { success: false, error: error.message }
+    await supabase
+      .from('conversations')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', conversationId)
+      .eq('user_id', authUserId)
+
+    revalidatePath('/dashboard/ai-helper')
+    return { success: true, data: { id: data.id } }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}
+
+export async function deleteConversation(
+  conversationId: string
+): Promise<MutationResult> {
+  try {
+    const authUserId = await getAuthUserId()
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from('conversations')
+      .delete()
+      .eq('id', conversationId)
+      .eq('user_id', authUserId)
+
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/dashboard/ai-helper')
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
+}

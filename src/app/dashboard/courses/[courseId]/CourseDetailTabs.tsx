@@ -23,17 +23,17 @@ export function CourseDetailTabs({ assignments }: CourseDetailTabsProps) {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white">
+    <div className="rounded-xl border border-white/10 bg-white/5">
       {/* Tab bar */}
-      <div className="flex border-b border-gray-200 px-4">
+      <div className="flex border-b border-white/10 px-4">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
               tab === t
-                ? 'border-indigo-600 text-indigo-700'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                ? 'border-[var(--sb-accent-muted)] text-[var(--foreground)]'
+                : 'border-transparent text-[var(--sb-muted)] hover:text-[var(--foreground)]'
             }`}
           >
             {t}
@@ -45,11 +45,11 @@ export function CourseDetailTabs({ assignments }: CourseDetailTabsProps) {
         {tab === 'Assignments' && (
           <>
             {localAssignments.length === 0 ? (
-              <p className="py-10 text-center text-sm text-gray-400">
+              <p className="py-10 text-center text-sm text-[var(--sb-muted)]">
                 No assignments for this course yet.
               </p>
             ) : (
-              <div className="divide-y divide-gray-50">
+              <div className="divide-y divide-white/5">
                 {localAssignments.map((a) => (
                   <AssignmentItem
                     key={a.id}
@@ -63,7 +63,7 @@ export function CourseDetailTabs({ assignments }: CourseDetailTabsProps) {
         )}
 
         {tab === 'Notes' && (
-          <p className="py-10 text-center text-sm text-gray-400">
+          <p className="py-10 text-center text-sm text-[var(--sb-muted)]">
             Notes for this course will appear here.
           </p>
         )}

@@ -63,14 +63,14 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
     <div className="space-y-5">
       <form onSubmit={handleProfileSubmit} className="sb-panel space-y-4 p-5">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">About yourself</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <h2 className="text-lg font-semibold text-[var(--foreground)]">About yourself</h2>
+          <p className="mt-1 text-sm text-[var(--sb-muted)]">
             Update your name and a short bio shown across your account.
           </p>
         </div>
 
         <div>
-          <label htmlFor="full-name" className="mb-1 block text-xs font-medium text-slate-600">
+          <label htmlFor="full-name" className="mb-1 block text-xs font-medium text-[var(--sb-muted)]">
             Full name
           </label>
           <input
@@ -84,7 +84,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         </div>
 
         <div>
-          <label htmlFor="bio" className="mb-1 block text-xs font-medium text-slate-600">
+          <label htmlFor="bio" className="mb-1 block text-xs font-medium text-[var(--sb-muted)]">
             Bio / about
           </label>
           <textarea
@@ -95,11 +95,11 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
             maxLength={500}
             placeholder="Tell us a bit about your goals, major, or study style..."
           />
-          <p className="mt-1 text-xs text-slate-500">{bio.length}/500</p>
+          <p className="mt-1 text-xs text-[rgba(148,163,184,0.85)]">{bio.length}/500</p>
         </div>
 
         {profileMsg && (
-          <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+          <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)]">
             {profileMsg}
           </p>
         )}
@@ -115,14 +115,14 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
 
       <form onSubmit={handleEmailSubmit} className="sb-panel space-y-4 p-5">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">Change email</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <h2 className="text-lg font-semibold text-[var(--foreground)]">Change email</h2>
+          <p className="mt-1 text-sm text-[var(--sb-muted)]">
             You may need to confirm the new address from your inbox.
           </p>
         </div>
 
         <div>
-          <label htmlFor="email" className="mb-1 block text-xs font-medium text-slate-600">
+          <label htmlFor="email" className="mb-1 block text-xs font-medium text-[var(--sb-muted)]">
             Email
           </label>
           <input
@@ -136,7 +136,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         </div>
 
         {emailMsg && (
-          <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+          <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)]">
             {emailMsg}
           </p>
         )}
@@ -144,7 +144,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         <button
           type="submit"
           disabled={savingEmail}
-          className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50"
+          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-white/10 disabled:opacity-50"
         >
           {savingEmail ? 'Updating…' : 'Update email'}
         </button>
@@ -152,8 +152,8 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
 
       <form onSubmit={handlePasswordSubmit} className="sb-panel space-y-4 p-5">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">Change password</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <h2 className="text-lg font-semibold text-[var(--foreground)]">Change password</h2>
+          <p className="mt-1 text-sm text-[var(--sb-muted)]">
             Use at least 8 characters for better security.
           </p>
         </div>
@@ -193,7 +193,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         </div>
 
         {passwordMsg && (
-          <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+          <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)]">
             {passwordMsg}
           </p>
         )}
@@ -201,7 +201,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         <button
           type="submit"
           disabled={savingPassword}
-          className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50"
+          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-white/10 disabled:opacity-50"
         >
           {savingPassword ? 'Updating…' : 'Update password'}
         </button>

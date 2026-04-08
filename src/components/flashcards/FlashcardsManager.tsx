@@ -66,9 +66,9 @@ export function FlashcardsManager({ initialDecks }: { initialDecks: DeckRow[] })
   return (
     <div className="space-y-6">
       <form onSubmit={handleCreateDeck} className="sb-panel space-y-4 p-6">
-        <h2 className="font-semibold text-slate-900">New deck</h2>
+        <h2 className="font-semibold text-[var(--foreground)]">New deck</h2>
         {error && (
-          <div className="rounded-xl border border-red-200/90 bg-red-50 px-3.5 py-2.5 text-sm text-red-800">
+          <div className="rounded-xl border border-rose-500/25 bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-200">
             {error}
           </div>
         )}
@@ -110,45 +110,45 @@ export function FlashcardsManager({ initialDecks }: { initialDecks: DeckRow[] })
       </form>
 
       <div className="sb-panel overflow-hidden">
-        <div className="border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-          <h2 className="font-semibold text-slate-900">Your decks</h2>
-          <p className="mt-0.5 text-xs text-slate-500">
+        <div className="border-b border-white/10 bg-white/5 px-5 py-4">
+          <h2 className="font-semibold text-[var(--foreground)]">Your decks</h2>
+          <p className="mt-0.5 text-xs text-[var(--sb-muted)]">
             {decks.length} deck{decks.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <ul className="divide-y divide-slate-50">
+        <ul className="divide-y divide-white/5">
           {decks.length === 0 && (
-            <li className="px-5 py-12 text-center text-sm text-slate-500">
+            <li className="px-5 py-12 text-center text-sm text-[var(--sb-muted)]">
               No flashcard decks yet. Create one above.
             </li>
           )}
           {decks.map((deck) => {
             const open = openId === deck.id
             return (
-              <li key={deck.id} className="bg-white">
+              <li key={deck.id} className="bg-transparent">
                 <button
                   type="button"
                   onClick={() => setOpenId(open ? null : deck.id)}
-                  className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-slate-50/90"
+                  className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-white/5"
                 >
                   {open ? (
-                    <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
+                    <ChevronDown className="h-4 w-4 shrink-0 text-[rgba(148,163,184,0.85)]" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" />
+                    <ChevronRight className="h-4 w-4 shrink-0 text-[rgba(148,163,184,0.85)]" />
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="font-medium text-slate-900">{deck.name}</p>
+                    <p className="font-medium text-[var(--foreground)]">{deck.name}</p>
                     {deck.description && (
-                      <p className="truncate text-sm text-slate-600">{deck.description}</p>
+                      <p className="truncate text-sm text-[var(--sb-muted)]">{deck.description}</p>
                     )}
                   </div>
-                  <span className="text-xs font-semibold tabular-nums text-slate-400">
+                  <span className="text-xs font-semibold tabular-nums text-[rgba(148,163,184,0.85)]">
                     {deck.card_count} cards
                   </span>
                 </button>
                 {open && (
-                  <div className="space-y-3 border-t border-slate-100 bg-slate-50/60 px-5 py-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+                  <div className="space-y-3 border-t border-white/10 bg-white/[0.03] px-5 py-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--sb-muted)]">
                       Add a card
                     </p>
                     <input

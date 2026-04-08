@@ -63,6 +63,25 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+@keyframes sbFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) scale(1.02);
+  }
+}
+
+@keyframes sbShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Shared form controls (auth + inline forms) */
 .sb-label {
   display: block;
@@ -218,4 +237,29 @@ body {
   background: var(--sb-surface);
   box-shadow: var(--sb-shadow);
   backdrop-filter: blur(10px);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.sb-panel-hover:hover {
+  border-color: rgba(148, 163, 184, 0.24);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.28),
+    0 14px 34px rgba(0, 0, 0, 0.28);
+}
+
+.sb-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.08) 0%,
+    rgba(148, 163, 184, 0.16) 25%,
+    rgba(148, 163, 184, 0.08) 50%
+  );
+  background-size: 200% 100%;
+  animation: sbShimmer 2s linear infinite;
+}
+
+.sb-float {
+  animation: sbFloat 7s ease-in-out infinite;
 }

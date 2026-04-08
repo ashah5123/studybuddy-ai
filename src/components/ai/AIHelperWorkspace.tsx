@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Loader2, Send } from 'lucide-react'
+import { Loader2, Send, Sparkles, Wand2 } from 'lucide-react'
 import type { Conversation, Course, Message } from '@/types/database.types'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -47,8 +47,8 @@ export function AIHelperWorkspace({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [followUps, setFollowUps] = useState<string[]>([])
-  const [remaining, setRemaining] = useState<number | null>(null)
-  const [limit, setLimit] = useState<number | null>(null)
+  const [, setRemaining] = useState<number | null>(null)
+  const [, setLimit] = useState<number | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   const selectedCourse = useMemo(
@@ -199,7 +199,9 @@ export function AIHelperWorkspace({
         />
       </Card>
 
-      <Card className="flex min-h-[70vh] flex-col overflow-hidden p-0">
+      <Card className="relative flex min-h-[70vh] flex-col overflow-hidden p-0">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-violet-500/20 blur-3xl sb-float" />
+        <div className="pointer-events-none absolute -bottom-24 -left-16 h-52 w-52 rounded-full bg-indigo-500/20 blur-3xl sb-float" />
         <div className="border-b border-white/10 bg-white/5 p-3 sm:p-4">
           <div className="flex flex-wrap items-center gap-2">
             <select
@@ -214,10 +216,9 @@ export function AIHelperWorkspace({
                 </option>
               ))}
             </select>
-            <div className="ml-auto text-xs text-[var(--sb-muted)]">
-              {remaining !== null && limit !== null
-                ? `You have ${remaining} questions remaining today`
-                : 'Daily quota: 10 questions (free tier)'}
+            <div className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-violet-300/20 bg-violet-500/10 px-3 py-1 text-xs text-violet-200">
+              <Sparkles className="h-3.5 w-3.5" />
+              Unlimited questions enabled
             </div>
           </div>
         </div>
@@ -225,15 +226,20 @@ export function AIHelperWorkspace({
         <ScrollArea className="flex-1 p-4 sm:p-5">
           <div className="space-y-4">
             {messages.length === 0 ? (
-              <p className="py-20 text-center text-sm text-[var(--sb-muted)]">
-                Ask a homework question. I will personalize help using your courses, notes, and recent chat history.
-              </p>
+              <div className="py-20 text-center">
+                <div className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600/80 to-violet-600/80 text-white shadow-lg shadow-violet-900/30">
+                  <Wand2 className="h-5 w-5" />
+                </div>
+                <p className="text-sm text-[var(--sb-muted)]">
+                  Ask a homework question. I will personalize help using your courses, notes, and recent chat history.
+                </p>
+              </div>
             ) : (
               messages.map((m) => <ChatMessage key={m.id} message={m} />)
             )}
             {loading && (
               <div className="flex justify-start text-xs text-[var(--sb-muted)]">
-                <span className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+                <span className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 sb-shimmer">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                   AI is thinking...
                 </span>
@@ -278,7 +284,7 @@ export function AIHelperWorkspace({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask a homework question..."
-            className="flex-1"
+            className="h-11 flex-1"
             disabled={loading}
           />
           <Button type="submit" disabled={loading || !input.trim()} className="h-11 w-11 px-0">

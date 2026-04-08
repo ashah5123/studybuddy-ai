@@ -6,6 +6,8 @@ import type {
   FlashcardDeck,
   Message,
   Note,
+  Quiz,
+  QuizQuestion,
   StudyPlan,
   StudyPlanTask,
   StudySession,
@@ -277,4 +279,41 @@ export async function getStudyPlanTasks(planId: string): Promise<StudyPlanTask[]
     .order('date', { ascending: true })
   if (error) throw new Error(error.message)
   return (data as StudyPlanTask[]) ?? []
+}
+
+export async function getQuizzes(userId: string): Promise<Quiz[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('quizzes')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return (data as Quiz[]) ?? []
+}
+
+export async function getQuizById(quizId: string, userId: string): Promise<Quiz | null> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('quizzes')
+    .select('*')
+    .eq('id', quizId)
+    .eq('user_id', userId)
+    .single()
+  if (error || !data) return null
+  return data as Quiz
+}
+
+export async function getQuizQuestions(quizId: string): Promise<QuizQuestion[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('quiz_questions')
+    .select('*')
+    .eq('quiz_id', quizId)
+    .order('created_at', { ascending: true })
+  if (error) throw new Error(error.message)
+  return ((data as Array<QuizQuestion & { options: unknown }>) ?? []).map((q) => ({
+    ...q,
+    options: Array.isArray(q.options) ? q.options.map(String) : [],
+  }))
 }

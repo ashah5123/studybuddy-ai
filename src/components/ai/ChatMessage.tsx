@@ -29,8 +29,8 @@ export function ChatMessage({ message }: { message: ChatMessageData }) {
       <div
         className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm shadow-sm sm:max-w-[82%] ${
           isUser
-            ? 'rounded-br-md bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
-            : 'rounded-bl-md border border-white/10 bg-white/5 text-[var(--foreground)]'
+            ? 'rounded-br-md bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white shadow-lg shadow-violet-900/25'
+            : 'rounded-bl-md border border-white/10 bg-white/5 text-[var(--foreground)] backdrop-blur-sm'
         }`}
       >
         <div className="prose prose-sm max-w-none prose-invert prose-p:my-1 prose-pre:overflow-x-auto">

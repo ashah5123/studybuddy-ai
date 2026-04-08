@@ -163,6 +163,49 @@ export interface StudyPlanTask {
   updated_at: string
 }
 
+export type QuizQuestionType = 'multiple_choice' | 'true_false' | 'short_answer'
+
+export interface Quiz {
+  id: string
+  user_id: string
+  course_id: string | null
+  title: string
+  source_file_url: string | null
+  total_questions: number
+  created_at: string
+  updated_at: string
+}
+
+export interface QuizQuestion {
+  id: string
+  quiz_id: string
+  question_text: string
+  type: QuizQuestionType
+  options: string[]
+  correct_answer: string
+  explanation: string | null
+  created_at: string
+}
+
+export interface QuizAttempt {
+  id: string
+  quiz_id: string
+  user_id: string
+  score: number
+  completed_at: string
+  time_taken_seconds: number
+  created_at: string
+}
+
+export interface QuizResponse {
+  id: string
+  attempt_id: string
+  question_id: string
+  user_answer: string | null
+  is_correct: boolean
+  created_at: string
+}
+
 // ──────────────────────────────────────────────────────────────
 // Database row / enum types for the app (Supabase table shapes).
 // The Supabase client is intentionally untyped at the generic level so

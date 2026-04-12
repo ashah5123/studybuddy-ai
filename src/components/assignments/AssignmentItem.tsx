@@ -80,7 +80,7 @@ export function AssignmentItem({
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40" onClick={() => setConfirmDelete(false)} />
-          <div className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-[rgba(15,23,42,0.92)] p-6 shadow-2xl shadow-black/40 ring-1 ring-white/5 backdrop-blur-md">
+          <div className="relative w-full max-w-sm rounded-2xl border border-[var(--sb-border)] bg-[var(--sb-surface)] p-6 shadow-2xl shadow-black/20 ring-1 ring-[var(--sb-border)] backdrop-blur-md">
             <h3 className="font-semibold text-[var(--foreground)]">Delete assignment?</h3>
             <p className="mt-2 text-sm text-[var(--sb-muted)]">
               &ldquo;{assignment.title}&rdquo; will be permanently removed.
@@ -89,7 +89,7 @@ export function AssignmentItem({
               <button
                 onClick={() => setConfirmDelete(false)}
                 disabled={deleting}
-                className="flex-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[var(--foreground)] hover:bg-white/10"
+                className="flex-1 rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-4 py-2 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--sb-item-bg-hover)]"
               >
                 Cancel
               </button>

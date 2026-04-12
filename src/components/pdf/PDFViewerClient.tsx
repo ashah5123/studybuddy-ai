@@ -220,7 +220,7 @@ export function PDFViewerClient({ documentId, documentName, fileUrl, initialAnno
       {/* PDF scroll area */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto rounded-xl border border-white/10 bg-[#0d1424] px-4 py-6"
+        className="flex-1 overflow-y-auto rounded-xl border border-[var(--sb-border)] bg-[var(--background)] px-4 py-6"
       >
         {/* Top controls */}
         <div className="mb-4 flex items-center gap-2">
@@ -231,7 +231,7 @@ export function PDFViewerClient({ documentId, documentName, fileUrl, initialAnno
             <button
               type="button"
               onClick={() => setPageWidth((w) => Math.max(w - 80, 300))}
-              className="rounded-lg border border-white/10 p-1.5 text-[rgba(226,232,240,0.8)] hover:bg-white/10"
+              className="rounded-lg border border-[var(--sb-border)] p-1.5 text-[var(--foreground)] hover:bg-[var(--sb-item-bg-hover)]"
               title="Zoom out"
             >
               <ZoomOut className="h-4 w-4" />
@@ -239,7 +239,7 @@ export function PDFViewerClient({ documentId, documentName, fileUrl, initialAnno
             <button
               type="button"
               onClick={() => setPageWidth((w) => Math.min(w + 80, 1200))}
-              className="rounded-lg border border-white/10 p-1.5 text-[rgba(226,232,240,0.8)] hover:bg-white/10"
+              className="rounded-lg border border-[var(--sb-border)] p-1.5 text-[var(--foreground)] hover:bg-[var(--sb-item-bg-hover)]"
               title="Zoom in"
             >
               <ZoomIn className="h-4 w-4" />
@@ -330,11 +330,11 @@ export function PDFViewerClient({ documentId, documentName, fileUrl, initialAnno
             onClick={dismissToolbar}
           />
           <div
-            className="fixed z-50 w-72 rounded-xl border border-white/15 bg-[#1a2440] p-3 shadow-2xl"
+            className="fixed z-50 w-72 rounded-xl border border-[var(--sb-border)] bg-[var(--sb-surface)] p-3 shadow-2xl"
             style={{ top: pending.toolbarTop, left: pending.toolbarLeft }}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="mb-2 line-clamp-2 text-xs text-[rgba(226,232,240,0.7)]">
+            <p className="mb-2 line-clamp-2 text-xs text-[var(--sb-muted)]">
               &ldquo;{pending.selectedText.slice(0, 120)}{pending.selectedText.length > 120 ? '…' : ''}&rdquo;
             </p>
 
@@ -362,7 +362,7 @@ export function PDFViewerClient({ documentId, documentName, fileUrl, initialAnno
               onChange={(e) => setPendingNote(e.target.value)}
               placeholder="Add a note… (optional)"
               rows={2}
-              className="mb-2 w-full resize-none rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="mb-2 w-full resize-none rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-2.5 py-1.5 text-xs text-[var(--foreground)] placeholder:text-[var(--sb-muted)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
 
             <div className="flex gap-2">
@@ -377,7 +377,7 @@ export function PDFViewerClient({ documentId, documentName, fileUrl, initialAnno
               <button
                 type="button"
                 onClick={dismissToolbar}
-                className="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-[rgba(226,232,240,0.7)] hover:bg-white/5"
+                className="rounded-lg border border-[var(--sb-border)] px-3 py-1.5 text-xs text-[var(--sb-muted)] hover:bg-[var(--sb-item-bg)]"
               >
                 Cancel
               </button>

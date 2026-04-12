@@ -64,13 +64,13 @@ export function CreateAssignmentDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40" onClick={handleClose} />
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[rgba(15,23,42,0.92)] shadow-2xl shadow-black/40 ring-1 ring-white/5 backdrop-blur-md">
+      <div className="relative w-full max-w-md rounded-2xl border border-[var(--sb-border)] bg-[var(--sb-surface)] shadow-2xl shadow-black/20 ring-1 ring-[var(--sb-border)] backdrop-blur-md">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-[var(--sb-border)] px-6 py-4">
           <h2 className="font-semibold text-[var(--foreground)]">New Assignment</h2>
           <button
             onClick={handleClose}
-            className="rounded-md p-1 text-[rgba(148,163,184,0.85)] hover:bg-white/10 hover:text-[var(--foreground)]"
+            className="rounded-md p-1 text-[var(--sb-muted)] hover:bg-[var(--sb-item-bg-hover)] hover:text-[var(--foreground)]"
           >
             <X className="h-5 w-5" />
           </button>
@@ -158,7 +158,7 @@ export function CreateAssignmentDialog({
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] hover:bg-white/10"
+              className="flex-1 rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-4 py-2.5 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--sb-item-bg-hover)]"
             >
               Cancel
             </button>

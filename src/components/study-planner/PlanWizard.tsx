@@ -90,7 +90,7 @@ export function PlanWizard({
               <div className="mt-2">
                 <Link
                   href="/dashboard/courses"
-                  className="inline-flex rounded-lg border border-white/15 bg-white/10 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-white/15"
+                  className="inline-flex rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg-hover)] px-2.5 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--sb-surface-3)]"
                 >
                   Go to Courses
                 </Link>
@@ -102,7 +102,7 @@ export function PlanWizard({
             return (
               <label
                 key={course.id}
-                className="flex cursor-pointer items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2"
+                className="flex cursor-pointer items-center justify-between rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2"
               >
                 <span className="text-sm text-[var(--foreground)]">
                   {course.emoji} {course.name}
@@ -126,7 +126,7 @@ export function PlanWizard({
           {selectedCourses.map((course) => {
             const existing = exams.find((x) => x.courseId === course.id)
             return (
-              <div key={course.id} className="grid gap-2 rounded-lg border border-white/10 bg-white/5 p-3 sm:grid-cols-3">
+              <div key={course.id} className="grid gap-2 rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-3 sm:grid-cols-3">
                 <p className="self-center text-sm text-[var(--foreground)]">
                   {course.emoji} {course.name}
                 </p>
@@ -181,7 +181,7 @@ export function PlanWizard({
         <div className="space-y-3">
           <p className="text-sm font-medium text-[var(--foreground)]">Rate course difficulty (1-5)</p>
           {selectedCourses.map((course) => (
-            <div key={course.id} className="grid gap-2 rounded-lg border border-white/10 bg-white/5 p-3 sm:grid-cols-[1fr_120px]">
+            <div key={course.id} className="grid gap-2 rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-3 sm:grid-cols-[1fr_120px]">
               <label className="text-sm text-[var(--foreground)]">
                 {course.emoji} {course.name}
               </label>

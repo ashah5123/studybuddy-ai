@@ -449,6 +449,101 @@ html[data-theme="light"] .sb-panel-hover:hover {
   box-shadow: 0 8px 32px rgba(15,23,42,.11), 0 2px 6px rgba(15,23,42,.07);
 }
 
+/* ─── Light mode: global fixes for hardcoded dark-theme values ─────────────────
+   These attribute selectors catch every component that still uses raw rgba()
+   or white/opacity Tailwind utilities without touching each file individually. */
+
+/* Off-white text → proper dark text */
+html[data-theme="light"] [class*="text-[rgba(226,232,240"],
+html[data-theme="light"] [class*="text-[rgba(241,245,249"] {
+  color: var(--foreground) !important;
+}
+html[data-theme="light"] [class*="text-[rgba(148,163,184"] {
+  color: var(--sb-muted) !important;
+}
+html[data-theme="light"] [class*="text-[rgba(100,116,139"] {
+  color: var(--sb-muted-2) !important;
+}
+
+/* Dark navy/slate solid backgrounds (dropdowns, shells) → surface */
+html[data-theme="light"] [class*="bg-[rgba(15,23,42"],
+html[data-theme="light"] [class*="bg-[rgba(17,24,39"],
+html[data-theme="light"] [class*="bg-[#0f162d]"],
+html[data-theme="light"] [class*="bg-[#0d1425]"],
+html[data-theme="light"] [class*="bg-[#111a33]"],
+html[data-theme="light"] [class*="bg-[#0b1020]"],
+html[data-theme="light"] [class*="bg-[#1a2440]"] {
+  background-color: var(--sb-surface) !important;
+}
+
+/* Near-invisible white backgrounds → surface-2 */
+html[data-theme="light"] [class*="bg-white/5"],
+html[data-theme="light"] [class*="bg-white\/5"],
+html[data-theme="light"] [class*="bg-white/[0.0"],
+html[data-theme="light"] [class*="bg-white/6"] {
+  background-color: var(--sb-item-bg) !important;
+}
+html[data-theme="light"] [class*="bg-white/10"],
+html[data-theme="light"] [class*="bg-white\/10"] {
+  background-color: var(--sb-item-bg-hover) !important;
+}
+
+/* Invisible white borders → proper border color */
+html[data-theme="light"] [class*="border-white/"] {
+  border-color: var(--sb-border) !important;
+}
+html[data-theme="light"] [class*="ring-white/"] {
+  --tw-ring-color: var(--sb-border) !important;
+}
+
+/* Hover states for white/opacity backgrounds */
+html[data-theme="light"] [class*="hover:bg-white/"]:hover {
+  background-color: var(--sb-item-bg-hover) !important;
+}
+
+/* bg-white/15 and bg-white/[0.15] not matched by /5 or /10 rules */
+html[data-theme="light"] [class*="bg-white/15"],
+html[data-theme="light"] [class*="bg-white\/15"],
+html[data-theme="light"] [class*="bg-white/[0.15"] {
+  background-color: var(--sb-item-bg-hover) !important;
+}
+
+/* Dividers that use white/opacity → proper border color */
+html[data-theme="light"] [class*="divide-white/"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--sb-border) !important;
+}
+
+/* Dark slate backgrounds used as UI chrome (e.g. image remove button) */
+html[data-theme="light"] [class*="bg-slate-800"],
+html[data-theme="light"] [class*="bg-slate-700"] {
+  background-color: var(--sb-surface-3) !important;
+  color: var(--foreground) !important;
+}
+html[data-theme="light"] [class*="hover:bg-slate-7"]:hover {
+  background-color: var(--sb-surface-3) !important;
+}
+
+/* Rose-300 is too light for light mode; bump to rose-500 */
+html[data-theme="light"] [class*="text-rose-300"] {
+  color: #f43f5e !important;
+}
+html[data-theme="light"] [class*="text-rose-200"] {
+  color: #e11d48 !important;
+}
+
+/* Light -100/-200 tints of semantic colors — invisible in light mode */
+html[data-theme="light"] [class*="text-emerald-200"],
+html[data-theme="light"] [class*="text-emerald-100"] {
+  color: #065f46 !important;
+}
+html[data-theme="light"] [class*="text-amber-200"],
+html[data-theme="light"] [class*="text-amber-100"] {
+  color: #92400e !important;
+}
+html[data-theme="light"] [class*="text-indigo-100"] {
+  color: #3730a3 !important;
+}
+
 /* ─── Scrollbar (both modes) ────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

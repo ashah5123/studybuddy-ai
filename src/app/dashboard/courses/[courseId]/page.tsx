@@ -47,7 +47,7 @@ export default async function CourseDetailPage({
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard/courses"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[rgba(226,232,240,0.9)] hover:bg-white/10"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] text-[var(--foreground)] hover:bg-[var(--sb-item-bg-hover)]"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
@@ -73,7 +73,7 @@ export default async function CourseDetailPage({
           { label: 'Completed', value: completedCount },
           { label: 'Remaining', value: assignments.length - completedCount },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-xl border border-white/10 bg-white/5 p-4 text-center">
+          <div key={label} className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-4 text-center">
             <p className="text-2xl font-bold text-[var(--foreground)]">{value}</p>
             <p className="text-xs text-[var(--sb-muted)] mt-0.5">{label}</p>
           </div>

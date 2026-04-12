@@ -73,7 +73,7 @@ export function StudyPlannerWorkspace({
           </TabsList>
         </Tabs>
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-[var(--sb-muted)]">
+          <span className="rounded-full border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-1 text-xs text-[var(--sb-muted)]">
             {completedCount}/{tasks.length} tasks complete
           </span>
           <Button variant="secondary" onClick={handleFellBehind}>

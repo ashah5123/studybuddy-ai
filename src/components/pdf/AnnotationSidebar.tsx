@@ -91,14 +91,14 @@ function AnnotationCard({
   }
 
   return (
-    <div className="rounded-lg border border-white/8 bg-white/[0.03] p-3">
+    <div className="rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-3">
       {/* Highlight swatch + text */}
       <div className="mb-2 flex items-start gap-2">
         <div
           className="mt-0.5 h-3 w-1 flex-shrink-0 rounded-full"
           style={{ backgroundColor: COLOR_HEX[annotation.color] ?? COLOR_HEX.yellow }}
         />
-        <p className="text-xs leading-relaxed text-[rgba(226,232,240,0.85)]">
+        <p className="text-xs leading-relaxed text-[var(--foreground)]">
           &ldquo;{annotation.selected_text}&rdquo;
         </p>
       </div>
@@ -110,7 +110,7 @@ function AnnotationCard({
             value={noteValue}
             onChange={(e) => setNoteValue(e.target.value)}
             rows={2}
-            className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="w-full resize-none rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-2.5 py-1.5 text-xs text-[var(--foreground)] placeholder:text-[var(--sb-muted)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
             placeholder="Add a note…"
           />
           <div className="mt-1 flex gap-1.5">
@@ -124,7 +124,7 @@ function AnnotationCard({
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="rounded px-2 py-1 text-[11px] text-[var(--sb-muted)] hover:text-white"
+              className="rounded px-2 py-1 text-[11px] text-[var(--sb-muted)] hover:text-[var(--foreground)]"
             >
               Cancel
             </button>
@@ -132,7 +132,7 @@ function AnnotationCard({
         </div>
       ) : annotation.note ? (
         <p
-          className="mb-2 cursor-pointer rounded bg-white/5 px-2 py-1 text-[11px] italic text-[rgba(148,163,184,0.85)] hover:bg-white/10"
+          className="mb-2 cursor-pointer rounded bg-[var(--sb-item-bg-hover)] px-2 py-1 text-[11px] italic text-[var(--sb-muted)] hover:bg-[var(--sb-surface-2)]"
           onClick={() => setEditing(true)}
           title="Click to edit"
         >
@@ -142,7 +142,7 @@ function AnnotationCard({
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="mb-2 text-[11px] text-[var(--sb-muted)] hover:text-white"
+          className="mb-2 text-[11px] text-[var(--sb-muted)] hover:text-[var(--foreground)]"
         >
           + Add note
         </button>
@@ -154,7 +154,7 @@ function AnnotationCard({
           <button
             type="button"
             onClick={() => setShowExplanation((v) => !v)}
-            className="flex items-center gap-1 text-[11px] text-indigo-300 hover:text-indigo-200"
+            className="flex items-center gap-1 text-[11px] text-[var(--sb-accent)] hover:opacity-80"
           >
             {showExplanation ? (
               <ChevronDown className="h-3 w-3" />
@@ -164,7 +164,7 @@ function AnnotationCard({
             AI Explanation
           </button>
           {showExplanation && (
-            <p className="mt-1.5 rounded-lg bg-indigo-900/30 px-2.5 py-2 text-[11px] leading-relaxed text-[rgba(199,210,254,0.9)]">
+            <p className="mt-1.5 rounded-lg bg-[var(--sb-accent-bg)] px-2.5 py-2 text-[11px] leading-relaxed text-[var(--foreground)]">
               {annotation.ai_explanation}
             </p>
           )}
@@ -174,7 +174,7 @@ function AnnotationCard({
           type="button"
           onClick={() => onExplain(annotation)}
           disabled={!!aiLoading}
-          className="mb-2 flex items-center gap-1 text-[11px] text-indigo-400 hover:text-indigo-300 disabled:opacity-50"
+          className="mb-2 flex items-center gap-1 text-[11px] text-[var(--sb-accent)] hover:opacity-80 disabled:opacity-50"
         >
           {isLoadingThis ? (
             <Loader2 className="h-3 w-3 animate-spin" />
@@ -190,7 +190,7 @@ function AnnotationCard({
         <button
           type="button"
           onClick={() => onDelete(annotation.id)}
-          className="rounded p-1 text-[var(--sb-muted)] hover:text-rose-400"
+          className="rounded p-1 text-[var(--sb-muted)] hover:text-rose-500"
           title="Delete annotation"
         >
           <Trash2 className="h-3.5 w-3.5" />
@@ -209,7 +209,6 @@ export function AnnotationSidebar({
   onExplain,
   onScrollToPage,
 }: Props) {
-  // Group by page
   const byPage = annotations.reduce<Record<number, Annotation[]>>((acc, a) => {
     ;(acc[a.page_number] ??= []).push(a)
     return acc
@@ -219,14 +218,14 @@ export function AnnotationSidebar({
     .sort((a, b) => a - b)
 
   return (
-    <div className="flex w-72 flex-shrink-0 flex-col rounded-xl border border-white/10 bg-[#111a33]">
+    <div className="flex w-72 flex-shrink-0 flex-col rounded-xl border border-[var(--sb-border)] bg-[var(--sb-surface)]">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+      <div className="flex items-center justify-between border-b border-[var(--sb-border)] px-4 py-3">
         <div className="flex items-center gap-2">
-          <BookOpen className="h-4 w-4 text-indigo-400" />
-          <span className="text-sm font-semibold text-white">Annotations</span>
+          <BookOpen className="h-4 w-4 text-[var(--sb-accent)]" />
+          <span className="text-sm font-semibold text-[var(--foreground)]">Annotations</span>
           {annotations.length > 0 && (
-            <span className="rounded-full bg-indigo-600/30 px-1.5 py-0.5 text-[10px] font-medium text-indigo-300">
+            <span className="rounded-full bg-[var(--sb-accent-bg)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--sb-accent)]">
               {annotations.length}
             </span>
           )}
@@ -236,7 +235,7 @@ export function AnnotationSidebar({
           onClick={() => exportStudyGuide(documentName, annotations)}
           disabled={annotations.length === 0}
           title="Export as study guide (.md)"
-          className="flex items-center gap-1 rounded-lg border border-white/10 px-2 py-1 text-[11px] text-[rgba(226,232,240,0.7)] hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center gap-1 rounded-lg border border-[var(--sb-border)] px-2 py-1 text-[11px] text-[var(--sb-muted)] hover:bg-[var(--sb-item-bg)] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Download className="h-3.5 w-3.5" />
           Export
@@ -248,7 +247,7 @@ export function AnnotationSidebar({
         {annotations.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <div className="mb-3 text-3xl">✍️</div>
-            <p className="text-sm font-medium text-white">No highlights yet</p>
+            <p className="text-sm font-medium text-[var(--foreground)]">No highlights yet</p>
             <p className="mt-1 text-xs text-[var(--sb-muted)]">
               Select text in the PDF to highlight and annotate it.
             </p>
@@ -260,7 +259,7 @@ export function AnnotationSidebar({
                 <button
                   type="button"
                   onClick={() => onScrollToPage(page)}
-                  className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--sb-muted)] hover:text-white"
+                  className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--sb-muted)] hover:text-[var(--foreground)]"
                 >
                   Page {page}
                 </button>

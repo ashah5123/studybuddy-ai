@@ -23,9 +23,9 @@ export function CourseDetailTabs({ assignments }: CourseDetailTabsProps) {
   }
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5">
+    <div className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)]">
       {/* Tab bar */}
-      <div className="flex border-b border-white/10 px-4">
+      <div className="flex border-b border-[var(--sb-border)] px-4">
         {TABS.map((t) => (
           <button
             key={t}
@@ -49,7 +49,7 @@ export function CourseDetailTabs({ assignments }: CourseDetailTabsProps) {
                 No assignments for this course yet.
               </p>
             ) : (
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-[var(--sb-border)]">
                 {localAssignments.map((a) => (
                   <AssignmentItem
                     key={a.id}

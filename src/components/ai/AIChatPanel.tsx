@@ -114,7 +114,7 @@ export function AIChatPanel() {
         <div className="space-y-4">
           {messages.length === 0 && (
             <div className="flex flex-col items-center gap-3 py-12 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-[var(--sb-accent)] ring-1 ring-white/10">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--sb-item-bg)] text-[var(--sb-accent)] ring-1 ring-[var(--sb-border)]">
                 <Sparkles className="h-6 w-6" />
               </span>
               <p className="max-w-sm text-sm leading-relaxed text-[var(--sb-muted)]">
@@ -132,7 +132,7 @@ export function AIChatPanel() {
                 className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap shadow-sm sm:max-w-[85%] ${
                   m.role === 'user'
                     ? 'rounded-br-md bg-gradient-to-br from-indigo-600 to-violet-600 text-white'
-                    : 'rounded-bl-md border border-white/10 bg-white/5 text-[var(--foreground)]'
+                    : 'rounded-bl-md border border-[var(--sb-border)] bg-[var(--sb-item-bg)] text-[var(--foreground)]'
                 }`}
               >
                 {m.role === 'user' && m.images && m.images.length > 0 && (
@@ -160,7 +160,7 @@ export function AIChatPanel() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-[var(--sb-muted)]">
+              <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-4 py-3 text-sm text-[var(--sb-muted)]">
                 <Loader2 className="h-4 w-4 animate-spin text-indigo-500" />
                 Thinking…
               </div>
@@ -177,7 +177,7 @@ export function AIChatPanel() {
       )}
 
       {pendingImages.length > 0 && (
-        <div className="flex flex-wrap gap-2 border-t border-white/10 bg-white/5 px-3 py-2 sm:px-4">
+        <div className="flex flex-wrap gap-2 border-t border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2 sm:px-4">
           {pendingImages.map((src, i) => (
             <div key={i} className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -189,7 +189,7 @@ export function AIChatPanel() {
               <button
                 type="button"
                 onClick={() => removePendingAt(i)}
-                className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-slate-800 text-white shadow hover:bg-slate-700"
+                className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-[var(--sb-surface-3)] text-[var(--foreground)] shadow hover:bg-[var(--sb-border)]"
                 aria-label="Remove image"
               >
                 <X className="h-3.5 w-3.5" />
@@ -199,7 +199,7 @@ export function AIChatPanel() {
         </div>
       )}
 
-      <div className="flex gap-2 border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4">
+      <div className="flex gap-2 border-t border-[var(--sb-border)] bg-[var(--sb-surface)] p-3 sm:p-4">
         <input
           ref={fileInputRef}
           type="file"
@@ -215,7 +215,7 @@ export function AIChatPanel() {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={loading || pendingImages.length >= MAX_PENDING_IMAGES}
-          className="flex h-11 w-11 shrink-0 items-center justify-center self-end rounded-xl border border-white/10 bg-white/5 text-[rgba(226,232,240,0.9)] shadow-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-45"
+          className="flex h-11 w-11 shrink-0 items-center justify-center self-end rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] text-[var(--foreground)] shadow-sm transition-colors hover:bg-[var(--sb-item-bg-hover)] disabled:cursor-not-allowed disabled:opacity-45"
           aria-label="Attach images"
         >
           <ImagePlus className="h-5 w-5" />

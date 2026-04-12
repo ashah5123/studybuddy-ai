@@ -89,7 +89,7 @@ export function NotesManager({ initialNotes }: { initialNotes: Note[] }) {
       </form>
 
       <div className="sb-panel overflow-hidden">
-        <div className="border-b border-white/10 bg-white/5 px-5 py-4">
+        <div className="border-b border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-5 py-4">
           <h2 className="font-semibold text-[var(--foreground)]">Your notes</h2>
           <p className="mt-0.5 text-xs text-[var(--sb-muted)]">{notes.length} saved</p>
         </div>
@@ -104,7 +104,7 @@ export function NotesManager({ initialNotes }: { initialNotes: Note[] }) {
             return (
               <li
                 key={note.id}
-                className="flex gap-3 px-5 py-4 transition-colors hover:bg-white/5"
+                className="flex gap-3 px-5 py-4 transition-colors hover:bg-[var(--sb-item-bg)]"
               >
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-[var(--foreground)]">{note.title}</p>
@@ -119,7 +119,7 @@ export function NotesManager({ initialNotes }: { initialNotes: Note[] }) {
                   type="button"
                   onClick={() => void handleDelete(note.id)}
                   disabled={deletingId === note.id}
-                  className="shrink-0 self-start rounded-xl p-2 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600"
+                  className="shrink-0 self-start rounded-xl p-2 text-[var(--sb-muted)] transition-colors hover:bg-rose-500/10 hover:text-rose-500"
                   aria-label="Delete note"
                 >
                   {deletingId === note.id ? (

@@ -1,9 +1,7 @@
 import * as React from 'react'
 
-export function Input({
-  className = '',
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input className={`sb-input ${className}`.trim()} {...props} />
-}
-
+export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  function Input({ className = '', ...props }, ref) {
+    return <input ref={ref} className={`sb-input ${className}`.trim()} {...props} />
+  }
+)

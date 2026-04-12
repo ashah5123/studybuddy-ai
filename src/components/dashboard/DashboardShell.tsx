@@ -32,7 +32,7 @@ const NAV_LINKS = [
   { href: '/dashboard/assignments', label: 'Assignments', icon: Calendar, exact: false },
   { href: '/dashboard/schedule', label: 'Schedule', icon: CalendarDays, exact: false },
   { href: '/dashboard/study-planner', label: 'Study Planner', icon: CalendarRange, exact: false },
-{ href: '/dashboard/ai-helper', label: 'AI Helper', icon: MessageSquare, exact: false },
+  { href: '/dashboard/ai-helper', label: 'AI Helper', icon: MessageSquare, exact: false },
   { href: '/dashboard/flashcards', label: 'Flashcards', icon: Zap, exact: false },
   { href: '/dashboard/notes', label: 'Notes', icon: StickyNote, exact: false },
   { href: '/dashboard/pdf-annotator', label: 'PDF Annotator', icon: FileText, exact: false },

@@ -3,37 +3,50 @@
 /* ─── Theme tokens ─────────────────────────────────────────────────────────── */
 
 html[data-theme="light"] {
-  --background: #f8fafc;
+  --background: #f1f5f9;
   --foreground: #0f172a;
 
   --sb-surface: #ffffff;
-  --sb-surface-2: #f1f5f9;
+  --sb-surface-2: #f8fafc;
   --sb-surface-3: #e2e8f0;
-  --sb-border: rgba(148, 163, 184, 0.35);
-  --sb-border-2: rgba(99, 102, 241, 0.25);
-  --sb-muted: #64748b;
-  --sb-muted-2: #94a3b8;
+  --sb-border: rgba(100, 116, 139, 0.28);
+  --sb-border-2: rgba(99, 102, 241, 0.35);
+  --sb-muted: #475569;
+  --sb-muted-2: #64748b;
 
-  --sb-accent: #6366f1;
-  --sb-accent-muted: #4f46e5;
+  --sb-accent: #4f46e5;
+  --sb-accent-muted: #4338ca;
   --sb-accent-bg: rgba(99, 102, 241, 0.08);
-  --sb-ring: rgba(99, 102, 241, 0.28);
+  --sb-ring: rgba(99, 102, 241, 0.30);
 
-  --sb-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --sb-shadow: 0 4px 6px rgba(15, 23, 42, 0.05), 0 10px 30px rgba(15, 23, 42, 0.07);
-  --sb-shadow-lg: 0 10px 40px rgba(15, 23, 42, 0.10), 0 2px 8px rgba(15, 23, 42, 0.06);
-  --sb-shadow-glow: 0 0 0 3px rgba(99, 102, 241, 0.14), 0 4px 20px rgba(99, 102, 241, 0.12);
+  --sb-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.05);
+  --sb-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 1px 4px rgba(15, 23, 42, 0.05);
+  --sb-shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.07);
+  --sb-shadow-glow: 0 0 0 3px rgba(99, 102, 241, 0.18), 0 4px 20px rgba(99, 102, 241, 0.14);
 
   --sb-sidebar-bg: #ffffff;
-  --sb-header-bg: rgba(255, 255, 255, 0.85);
-  --sb-nav-active-bg: rgba(99, 102, 241, 0.10);
-  --sb-nav-active-text: #4f46e5;
-  --sb-nav-text: #475569;
+  --sb-header-bg: rgba(255, 255, 255, 0.92);
+  --sb-nav-active-bg: rgba(99, 102, 241, 0.09);
+  --sb-nav-active-text: #4338ca;
+  --sb-nav-text: #374151;
+
+  /* Item surfaces — replaces bg-white/5 + border-white/10 in light mode */
+  --sb-item-bg: rgba(15, 23, 42, 0.04);
+  --sb-item-bg-hover: rgba(15, 23, 42, 0.07);
+  --sb-item-border: rgba(100, 116, 139, 0.22);
+  --sb-item-active-bg: rgba(99, 102, 241, 0.08);
+  --sb-item-active-border: rgba(99, 102, 241, 0.35);
 }
 
 html[data-theme="dark"] {
   --background: #080e1a;
   --foreground: rgba(241, 245, 249, 0.93);
+  /* Item surfaces for dark mode */
+  --sb-item-bg: rgba(255, 255, 255, 0.05);
+  --sb-item-bg-hover: rgba(255, 255, 255, 0.09);
+  --sb-item-border: rgba(148, 163, 184, 0.14);
+  --sb-item-active-bg: rgba(99, 102, 241, 0.14);
+  --sb-item-active-border: rgba(129, 140, 248, 0.40);
 
   --sb-surface: rgba(15, 23, 42, 0.80);
   --sb-surface-2: rgba(30, 41, 59, 0.70);
@@ -83,6 +96,11 @@ html[data-theme="dark"] {
   --sb-nav-active-bg: rgba(139,92,246,.14);
   --sb-nav-active-text: #c4b5fd;
   --sb-nav-text: rgba(148,163,184,.85);
+  --sb-item-bg: rgba(255,255,255,.05);
+  --sb-item-bg-hover: rgba(255,255,255,.09);
+  --sb-item-border: rgba(148,163,184,.14);
+  --sb-item-active-bg: rgba(99,102,241,.14);
+  --sb-item-active-border: rgba(129,140,248,.40);
 }
 
 @theme inline {
@@ -384,3 +402,58 @@ html[data-theme="light"] .sb-badge-low    { background: rgba(16,185,129,.12); co
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ─── Adaptive item / surface classes ──────────────────────────────────────────
+   Use these instead of bg-white/5 border-white/10 so both themes look correct. */
+
+/* A contained surface item (list row, conversation entry, inner card) */
+.sb-item {
+  background: var(--sb-item-bg);
+  border: 1.5px solid var(--sb-item-border);
+  border-radius: 0.75rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sb-item:hover { background: var(--sb-item-bg-hover); }
+
+/* Active / selected state of an item */
+.sb-item-active {
+  background: var(--sb-item-active-bg) !important;
+  border-color: var(--sb-item-active-border) !important;
+}
+
+/* Hover background for interactive rows that have no border */
+.sb-row-hover:hover { background: var(--sb-item-bg); }
+
+/* ─── Light-mode prose override ─────────────────────────────────────────────── */
+/* ChatMessage AI bubbles use prose — prose-invert breaks in light mode */
+html[data-theme="light"] .sb-prose {
+  --tw-prose-body: #1e293b;
+  --tw-prose-headings: #0f172a;
+  --tw-prose-code: #1e293b;
+  --tw-prose-pre-bg: #f1f5f9;
+  --tw-prose-pre-code: #1e293b;
+}
+html[data-theme="dark"] .sb-prose {
+  --tw-prose-body: rgba(226,232,240,0.90);
+  --tw-prose-headings: rgba(241,245,249,0.95);
+  --tw-prose-code: rgba(226,232,240,0.90);
+  --tw-prose-pre-bg: rgba(15,23,42,0.80);
+  --tw-prose-pre-code: rgba(226,232,240,0.90);
+}
+
+/* ─── Light-mode panel elevation fix ───────────────────────────────────────── */
+html[data-theme="light"] .sb-panel {
+  box-shadow: 0 1px 3px rgba(15,23,42,.07), 0 4px 12px rgba(15,23,42,.05);
+}
+html[data-theme="light"] .sb-panel-hover:hover {
+  box-shadow: 0 8px 32px rgba(15,23,42,.11), 0 2px 6px rgba(15,23,42,.07);
+}
+
+/* ─── Scrollbar (both modes) ────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--sb-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--sb-muted-2); }

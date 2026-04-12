@@ -323,7 +323,7 @@ export function AIHelperWorkspace({
       <Card className="relative flex min-h-[70vh] flex-col overflow-hidden p-0">
         <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-violet-500/20 blur-3xl sb-float" />
         <div className="pointer-events-none absolute -bottom-24 -left-16 h-52 w-52 rounded-full bg-indigo-500/20 blur-3xl sb-float" />
-        <div className="border-b border-white/10 bg-white/5 p-3 sm:p-4">
+        <div className="border-b border-[var(--sb-border)] bg-[var(--sb-surface-2)] p-3 sm:p-4">
           <div className="flex flex-wrap items-center gap-2">
             <select
               value={selectedCourseId}
@@ -337,9 +337,9 @@ export function AIHelperWorkspace({
                 </option>
               ))}
             </select>
-            <div className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-violet-300/20 bg-violet-500/10 px-3 py-1 text-xs text-violet-200">
+            <div className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-[var(--sb-border-2)] bg-[var(--sb-accent-bg)] px-3 py-1 text-xs text-[var(--sb-accent)]">
               <Sparkles className="h-3.5 w-3.5" />
-              Unlimited questions enabled
+              Unlimited questions
             </div>
           </div>
         </div>
@@ -360,7 +360,7 @@ export function AIHelperWorkspace({
             )}
             {loading && (
               <div className="flex justify-start text-xs text-[var(--sb-muted)]">
-                <span className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 sb-shimmer">
+                <span className="inline-flex items-center gap-2 rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2 sb-shimmer">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                   AI is thinking...
                 </span>
@@ -371,15 +371,15 @@ export function AIHelperWorkspace({
         </ScrollArea>
 
         {followUps.length > 0 && (
-          <div className="border-t border-white/10 bg-white/5 px-3 py-2 sm:px-4">
-            <p className="mb-2 text-xs font-medium text-[var(--sb-muted)]">Suggested follow-up questions</p>
+          <div className="border-t border-[var(--sb-border)] bg-[var(--sb-surface-2)] px-3 py-2 sm:px-4">
+            <p className="mb-2 text-xs font-medium text-[var(--sb-muted)]">Suggested follow-ups</p>
             <div className="flex flex-wrap gap-2">
               {followUps.map((f) => (
                 <button
                   key={f}
                   type="button"
                   onClick={() => setInput(f)}
-                  className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-[var(--foreground)] hover:bg-white/10"
+                  className="rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-2.5 py-1.5 text-xs text-[var(--foreground)] transition-colors hover:border-[var(--sb-border-2)] hover:bg-[var(--sb-item-bg-hover)]"
                 >
                   {f}
                 </button>
@@ -398,8 +398,8 @@ export function AIHelperWorkspace({
         {(isRecordingAny || voiceError || voiceNotice) && (
           <div className={`border-t px-3 py-2 text-xs sm:px-4 ${
             voiceError
-              ? 'border-rose-500/20 bg-rose-500/10 text-rose-300'
-              : 'border-white/10 bg-white/[0.03] text-[var(--sb-muted)]'
+              ? 'border-rose-500/20 bg-rose-500/10 text-rose-400'
+              : 'border-[var(--sb-border)] bg-[var(--sb-surface-2)] text-[var(--sb-muted)]'
           }`}>
             {voiceError ? (
               <span>{voiceError}</span>
@@ -423,7 +423,7 @@ export function AIHelperWorkspace({
             e.preventDefault()
             void sendQuestion(input)
           }}
-          className="flex items-center gap-2 border-t border-white/10 bg-white/[0.03] p-3 sm:p-4"
+          className="flex items-center gap-2 border-t border-[var(--sb-border)] bg-[var(--sb-surface-2)] p-3 sm:p-4"
         >
           <Input
             ref={inputRef}
@@ -443,7 +443,7 @@ export function AIHelperWorkspace({
             className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
               isRecordingAny
                 ? 'border-rose-500/50 bg-rose-500/15 text-rose-400 hover:bg-rose-500/25'
-                : 'border-white/10 bg-white/5 text-[rgba(226,232,240,0.8)] hover:bg-white/10'
+                : 'border-[var(--sb-border)] bg-[var(--sb-item-bg)] text-[var(--sb-muted)] hover:bg-[var(--sb-item-bg-hover)]'
             }`}
           >
             {isTranscribing ? (

@@ -74,9 +74,7 @@ export function ConversationHistory({
             return (
               <div
                 key={c.id}
-                className={`group mb-1 rounded-xl border p-2.5 ${
-                  active ? 'border-indigo-400/50 bg-indigo-500/10' : 'border-white/10 bg-white/5'
-                }`}
+                className={`group mb-1 sb-item p-2.5 ${active ? 'sb-item-active' : ''}`}
               >
                 <button
                   type="button"

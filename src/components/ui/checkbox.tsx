@@ -14,8 +14,7 @@ export function Checkbox({
       type="checkbox"
       checked={checked}
       onChange={(e) => onCheckedChange(e.target.checked)}
-      className={`h-4 w-4 rounded border-white/20 bg-white/5 ${className}`.trim()}
+      className={`h-4 w-4 rounded border-[var(--sb-border)] bg-[var(--sb-surface)] accent-[var(--sb-accent)] ${className}`.trim()}
     />
   )
 }
-

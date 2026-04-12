@@ -9,6 +9,7 @@ import {
   CalendarDays,
   CalendarRange,
   FileQuestion,
+  FileText,
   Settings,
   LayoutDashboard,
   MessageSquare,
@@ -36,6 +37,7 @@ const NAV_LINKS = [
   { href: '/dashboard/ai-helper', label: 'AI Helper', icon: MessageSquare, exact: false },
   { href: '/dashboard/flashcards', label: 'Flashcards', icon: Zap, exact: false },
   { href: '/dashboard/notes', label: 'Notes', icon: StickyNote, exact: false },
+  { href: '/dashboard/pdf-annotator', label: 'PDF Annotator', icon: FileText, exact: false },
   { href: '/dashboard/settings', label: 'Account', icon: Settings, exact: false },
 ]
 

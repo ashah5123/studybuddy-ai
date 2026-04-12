@@ -53,13 +53,13 @@ function NavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+      className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
         active
-          ? 'bg-[rgba(99,102,241,0.16)] text-white ring-1 ring-[rgba(99,102,241,0.34)]'
-          : 'text-[rgba(226,232,240,0.78)] hover:bg-white/6 hover:text-white'
+          ? 'bg-[var(--sb-nav-active-bg)] text-[var(--sb-nav-active-text)] shadow-sm ring-1 ring-[var(--sb-border-2)]'
+          : 'text-[var(--sb-nav-text)] hover:bg-[var(--sb-accent-bg)] hover:text-[var(--foreground)]'
       }`}
     >
-      <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-[var(--sb-accent)]' : 'text-[rgba(148,163,184,0.85)]'}`} />
+      <Icon className={`h-4 w-4 shrink-0 transition-colors ${active ? 'text-[var(--sb-accent)]' : 'text-[var(--sb-muted-2)]'}`} />
       {label}
     </Link>
   )
@@ -197,26 +197,26 @@ export function DashboardShell({ profile, children }: DashboardShellProps) {
 
   return (
     <div className="min-h-screen bg-[#0f162d] text-[var(--foreground)]">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-white/10 bg-[#111a33] px-4 py-4 lg:flex lg:flex-col">
-        <Link href="/dashboard" className="mb-5 flex items-center gap-2.5 px-1">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm text-white">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-[var(--sb-border)] bg-[var(--sb-sidebar-bg)] px-3 py-4 lg:flex lg:flex-col">
+        <Link href="/dashboard" className="mb-5 flex items-center gap-2.5 px-2">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm text-white shadow-md shadow-indigo-500/30">
             📚
           </span>
-          <span className="font-bold tracking-tight text-white">
-            Study<span className="text-[var(--sb-accent)]">Buddy</span>
+          <span className="font-bold tracking-tight text-[var(--foreground)]">
+            Study<span className="sb-gradient-text">Buddy</span>
           </span>
         </Link>
-        <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[rgba(148,163,184,0.85)]">
+        <div className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-widest text-[var(--sb-muted-2)]">
           Workspace
         </div>
-        <nav className="space-y-1 overflow-y-auto pr-1">
+        <nav className="space-y-0.5 overflow-y-auto pr-0.5">
           {NAV_LINKS.map((link) => (
             <NavLink key={link.href} {...link} />
           ))}
         </nav>
       </aside>
 
-      <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/10 bg-[#0f162d] px-3 sm:px-4 lg:ml-[248px]">
+      <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-[var(--sb-border)] bg-[var(--sb-header-bg)] px-3 backdrop-blur-xl sm:px-4 lg:ml-[248px]">
         <button
           type="button"
           className="rounded-lg p-2 text-[rgba(226,232,240,0.9)] hover:bg-white/10 lg:hidden"
@@ -227,12 +227,11 @@ export function DashboardShell({ profile, children }: DashboardShellProps) {
         </button>
 
         <Link href="/dashboard" className="mr-2 flex items-center gap-2.5 sm:mr-4 lg:hidden">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm shadow shadow-indigo-500/30">
             📚
           </span>
-          <span className="hidden font-bold tracking-tight text-white sm:block">
-            Study<span className="text-[var(--sb-accent)]">Buddy</span>
-            <span className="text-[rgba(129,140,248,0.95)]"> AI</span>
+          <span className="hidden font-bold tracking-tight text-[var(--foreground)] sm:block">
+            Study<span className="sb-gradient-text">Buddy</span>
           </span>
         </Link>
 
@@ -255,10 +254,10 @@ export function DashboardShell({ profile, children }: DashboardShellProps) {
             aria-label="Close navigation"
             onClick={() => setSidebarOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r border-white/10 bg-[#111a33] shadow-2xl shadow-black/30">
-            <div className="flex h-14 items-center justify-between border-b border-white/10 px-4">
-              <span className="font-bold text-white">
-                Study<span className="text-[var(--sb-accent)]">Buddy</span>
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r border-[var(--sb-border)] bg-[var(--sb-sidebar-bg)] shadow-2xl shadow-black/30">
+            <div className="flex h-14 items-center justify-between border-b border-[var(--sb-border)] px-4">
+              <span className="font-bold text-[var(--foreground)]">
+                Study<span className="sb-gradient-text">Buddy</span>
               </span>
               <button
                 type="button"
@@ -281,7 +280,7 @@ export function DashboardShell({ profile, children }: DashboardShellProps) {
         </div>
       )}
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:ml-[248px] lg:px-8 lg:py-8 text-[var(--foreground)]">{children}</main>
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:ml-[248px] lg:px-8 lg:py-8 text-[var(--foreground)] sb-fade-in">{children}</main>
     </div>
   )
 }

@@ -35,11 +35,11 @@ function filterAssignments(assignments: Assignment[], tab: TabKey): Assignment[]
 
 function SkeletonItem() {
   return (
-    <div className="flex items-center gap-3 py-3 animate-pulse">
-      <div className="h-5 w-5 rounded-full bg-gray-200 shrink-0" />
-      <div className="flex-1 space-y-1.5">
-        <div className="h-4 w-2/3 rounded bg-gray-200" />
-        <div className="h-3 w-1/4 rounded bg-gray-200" />
+    <div className="flex items-center gap-3 px-2 py-3">
+      <div className="h-5 w-5 shrink-0 rounded-full sb-skeleton" />
+      <div className="flex-1 space-y-2">
+        <div className="h-4 w-2/3 rounded-md sb-skeleton" />
+        <div className="h-3 w-1/4 rounded-md sb-skeleton" />
       </div>
     </div>
   )
@@ -100,27 +100,17 @@ export default function AssignmentsPage() {
 
       {/* Search + tabs */}
       <div className="sb-panel overflow-hidden">
-        <div className="border-b border-slate-100 px-4">
-          <div className="flex gap-1">
+        <div className="border-b border-[var(--sb-border)] px-4">
+          <div className="flex gap-0.5 overflow-x-auto">
             {TABS.map(({ key, label }) => (
               <button
                 key={key}
                 type="button"
                 onClick={() => setTab(key)}
-                className={`flex items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
-                  tab === key
-                    ? 'border-indigo-600 text-indigo-700'
-                    : 'border-transparent text-slate-500 hover:text-slate-800  '
-                }`}
+                className={`sb-tab ${tab === key ? 'sb-tab-active' : ''}`}
               >
                 {label}
-                <span
-                  className={`rounded-full px-1.5 py-0.5 text-xs font-semibold tabular-nums ${
-                    tab === key ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-500'
-                  }`}
-                >
-                  {tabCounts[key]}
-                </span>
+                <span className="sb-tab-count">{tabCounts[key]}</span>
               </button>
             ))}
           </div>
@@ -137,19 +127,25 @@ export default function AssignmentsPage() {
 
         {/* Error */}
         {error && (
-          <div className="mx-4 mb-4 rounded-xl border border-red-200/90 bg-red-50 p-3 text-sm text-red-800">
+          <div className="mx-4 mb-4 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-sm text-rose-400">
             {error.message}
           </div>
         )}
 
         {/* List */}
-        <div className="divide-y divide-slate-50 px-4 pb-4">
+        <div className="px-2 pb-3">
           {loading && [1, 2, 3].map((i) => <SkeletonItem key={i} />)}
 
           {!loading && filtered.length === 0 && (
-            <p className="py-12 text-center text-sm text-slate-500">
-              {search ? 'No assignments match your search.' : 'No assignments here.'}
-            </p>
+            <div className="flex flex-col items-center py-12 text-center">
+              <span className="text-3xl">📭</span>
+              <p className="mt-3 text-sm font-medium text-[var(--foreground)]">
+                {search ? 'No matches found' : 'Nothing here'}
+              </p>
+              <p className="mt-1 text-xs text-[var(--sb-muted)]">
+                {search ? 'Try a different search term.' : 'Add an assignment to get started.'}
+              </p>
+            </div>
           )}
 
           {!loading &&

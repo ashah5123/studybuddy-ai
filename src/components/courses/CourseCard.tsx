@@ -110,16 +110,26 @@ export function CourseCard({
       )}
 
       <div
-        className="group relative rounded-xl border border-white/10 bg-white/5 p-5 shadow-sm shadow-black/20 hover:bg-white/10 transition-colors"
-        style={{ borderTopColor: course.color, borderTopWidth: 3 }}
+        className="group relative overflow-hidden rounded-2xl border border-[var(--sb-border)] bg-[var(--sb-surface)] p-5 shadow-[var(--sb-shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--sb-border-2)] hover:shadow-[var(--sb-shadow-lg)]"
       >
+        {/* Colored top accent bar */}
+        <div className="absolute inset-x-0 top-0 h-[3px] rounded-t-2xl" style={{ background: course.color }} />
+
+        {/* Subtle background tint from course color */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.035] rounded-2xl" style={{ background: course.color }} />
+
         {/* Header */}
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="text-2xl">{course.emoji}</span>
+        <div className="relative flex items-start justify-between pt-1">
+          <div className="flex items-center gap-3">
+            <span
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-2xl shadow-sm"
+              style={{ background: `${course.color}18` }}
+            >
+              {course.emoji}
+            </span>
             <div>
-              <h3 className="font-semibold text-[var(--foreground)] leading-tight">{course.name}</h3>
-              <p className="text-xs text-[rgba(148,163,184,0.85)] mt-0.5">
+              <h3 className="font-semibold leading-tight text-[var(--foreground)]">{course.name}</h3>
+              <p className="mt-0.5 text-xs text-[var(--sb-muted)]">
                 {assignmentCount} assignment{assignmentCount !== 1 ? 's' : ''}
               </p>
             </div>
@@ -129,21 +139,21 @@ export function CourseCard({
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-md p-1.5 text-[rgba(148,163,184,0.85)] hover:bg-white/10 hover:text-[var(--foreground)] opacity-0 group-hover:opacity-100 transition-opacity"
+              className="rounded-lg p-1.5 text-[var(--sb-muted)] opacity-0 transition-all group-hover:opacity-100 hover:bg-[var(--sb-surface-2)] hover:text-[var(--foreground)]"
             >
               <MoreVertical className="h-4 w-4" />
             </button>
             {menuOpen && (
-              <div className="absolute right-0 top-full z-10 mt-2 w-40 rounded-xl border border-white/10 bg-[rgba(15,23,42,0.92)] py-1 shadow-2xl shadow-black/40 ring-1 ring-white/5 backdrop-blur-md">
+              <div className="absolute right-0 top-full z-10 mt-2 w-40 rounded-xl border border-[var(--sb-border)] bg-[var(--sb-surface)] py-1 shadow-[var(--sb-shadow-lg)] ring-1 ring-[var(--sb-border)] backdrop-blur-md">
                 <button
                   onClick={() => { setMenuOpen(false); onEdit(course) }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)] hover:bg-white/5"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--sb-surface-2)]"
                 >
-                  <Edit2 className="h-4 w-4" /> Edit
+                  <Edit2 className="h-4 w-4 text-[var(--sb-muted)]" /> Edit
                 </button>
                 <button
                   onClick={() => { setMenuOpen(false); setConfirmDelete(true) }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-rose-300 hover:bg-rose-500/10"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-rose-400 hover:bg-rose-500/10"
                 >
                   <Trash2 className="h-4 w-4" /> Delete
                 </button>
@@ -154,10 +164,10 @@ export function CourseCard({
 
         {/* Next due */}
         {nextDue && dueDateText && (
-          <div className="mt-3 flex items-center gap-1.5 text-xs text-[var(--sb-muted)]">
-            <Calendar className="h-3.5 w-3.5" />
+          <div className="relative mt-3 flex items-center gap-1.5 rounded-lg bg-[var(--sb-surface-2)] px-2.5 py-1.5 text-xs text-[var(--sb-muted)]">
+            <Calendar className="h-3.5 w-3.5 shrink-0" />
             <span className="truncate">{nextDue.title}</span>
-            <span className="shrink-0 font-medium" style={{ color: course.color }}>
+            <span className="ml-auto shrink-0 font-semibold" style={{ color: course.color }}>
               {dueDateText}
             </span>
           </div>
@@ -166,7 +176,7 @@ export function CourseCard({
         {/* View link */}
         <Link
           href={`/dashboard/courses/${course.id}`}
-          className="mt-4 flex items-center justify-center rounded-lg border border-white/10 bg-white/5 py-2 text-sm font-medium text-[var(--foreground)] hover:bg-white/10 transition-colors"
+          className="relative mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--sb-border)] bg-[var(--sb-surface-2)] py-2 text-sm font-medium text-[var(--foreground)] transition-all hover:border-[var(--sb-border-2)] hover:bg-[var(--sb-accent-bg)] hover:text-[var(--sb-accent)]"
         >
           View course
         </Link>

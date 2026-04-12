@@ -14,8 +14,8 @@ import {
 } from 'lucide-react'
 import { AnnotationSidebar } from './AnnotationSidebar'
 
-// Use CDN worker. For production, copy pdfjs-dist/build/pdf.worker.min.mjs to /public.
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`
+// Use unpkg CDN for worker (more reliable than cdnjs for v5)
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 export interface Annotation {
   id: string

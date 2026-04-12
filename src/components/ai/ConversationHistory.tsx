@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Search, Trash2, Plus } from 'lucide-react'
+import { Trash2, Plus } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -54,27 +54,27 @@ export function ConversationHistory({
       </div>
 
       <div className="relative mb-3">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--sb-muted)]" />
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by title/date/subject"
-          className="pl-9"
+          className="h-11"
         />
       </div>
 
       <ScrollArea className="flex-1 space-y-1 pr-1">
         {filtered.length === 0 ? (
-          <p className="px-2 py-6 text-center text-xs text-[var(--sb-muted)]">No conversations yet.</p>
+          <p className="px-2 py-10 text-center text-xs text-[var(--sb-muted)]">
+            No conversations yet. Start one with the <span className="text-[var(--foreground)]">New</span>{' '}
+            button.
+          </p>
         ) : (
           filtered.map((c) => {
             const active = c.id === activeConversationId
             return (
               <div
                 key={c.id}
-                className={`group mb-1 rounded-xl border p-2.5 ${
-                  active ? 'border-indigo-400/50 bg-indigo-500/10' : 'border-white/10 bg-white/5'
-                }`}
+                className={`group mb-1 sb-item p-2.5 ${active ? 'sb-item-active' : ''}`}
               >
                 <button
                   type="button"

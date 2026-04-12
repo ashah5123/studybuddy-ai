@@ -55,12 +55,12 @@ export function PlanCalendar({
                 key={date}
                 onClick={() => setSelectedDay(d)}
                 className={`min-h-[74px] rounded-lg border p-2 text-left ${
-                  isSelected ? 'border-indigo-400/60 bg-indigo-500/10' : 'border-white/10 bg-white/5'
+                  isSelected ? 'border-indigo-400/60 bg-indigo-500/10' : 'border-[var(--sb-border)] bg-[var(--sb-item-bg)]'
                 }`}
               >
                 <div className="text-xs font-semibold text-[var(--foreground)]">{format(d, 'd')}</div>
                 {dayTasks.slice(0, 2).map((t) => (
-                  <div key={t.id} className="mt-1 truncate rounded bg-white/10 px-1.5 py-0.5 text-[10px] text-white">
+                  <div key={t.id} className="mt-1 truncate rounded bg-[var(--sb-item-bg-hover)] px-1.5 py-0.5 text-[10px] text-[var(--foreground)]">
                     {t.topic}
                   </div>
                 ))}

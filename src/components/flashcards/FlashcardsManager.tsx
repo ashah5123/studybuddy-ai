@@ -110,7 +110,7 @@ export function FlashcardsManager({ initialDecks }: { initialDecks: DeckRow[] })
       </form>
 
       <div className="sb-panel overflow-hidden">
-        <div className="border-b border-white/10 bg-white/5 px-5 py-4">
+        <div className="border-b border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-5 py-4">
           <h2 className="font-semibold text-[var(--foreground)]">Your decks</h2>
           <p className="mt-0.5 text-xs text-[var(--sb-muted)]">
             {decks.length} deck{decks.length !== 1 ? 's' : ''}
@@ -129,7 +129,7 @@ export function FlashcardsManager({ initialDecks }: { initialDecks: DeckRow[] })
                 <button
                   type="button"
                   onClick={() => setOpenId(open ? null : deck.id)}
-                  className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-white/5"
+                  className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-[var(--sb-item-bg)]"
                 >
                   {open ? (
                     <ChevronDown className="h-4 w-4 shrink-0 text-[rgba(148,163,184,0.85)]" />
@@ -147,7 +147,7 @@ export function FlashcardsManager({ initialDecks }: { initialDecks: DeckRow[] })
                   </span>
                 </button>
                 {open && (
-                  <div className="space-y-3 border-t border-white/10 bg-white/[0.03] px-5 py-4">
+                  <div className="space-y-3 border-t border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-5 py-4">
                     <p className="text-xs font-semibold uppercase tracking-wide text-[var(--sb-muted)]">
                       Add a card
                     </p>

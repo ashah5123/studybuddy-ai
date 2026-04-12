@@ -10,15 +10,15 @@ import type { Course } from '@/types/database.types'
 
 function SkeletonCard() {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-5 animate-pulse">
+    <div className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-5 animate-pulse">
       <div className="flex gap-3">
-        <div className="h-8 w-8 rounded-lg bg-white/10" />
+        <div className="h-8 w-8 rounded-lg bg-[var(--sb-surface-3)]" />
         <div className="flex-1 space-y-2">
-          <div className="h-4 w-3/4 rounded bg-white/10" />
-          <div className="h-3 w-1/3 rounded bg-white/10" />
+          <div className="h-4 w-3/4 rounded bg-[var(--sb-surface-3)]" />
+          <div className="h-3 w-1/3 rounded bg-[var(--sb-surface-3)]" />
         </div>
       </div>
-      <div className="mt-4 h-9 rounded-lg bg-white/10" />
+      <div className="mt-4 h-9 rounded-lg bg-[var(--sb-surface-3)]" />
     </div>
   )
 }

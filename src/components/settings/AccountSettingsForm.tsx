@@ -95,11 +95,11 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
             maxLength={500}
             placeholder="Tell us a bit about your goals, major, or study style..."
           />
-          <p className="mt-1 text-xs text-[rgba(148,163,184,0.85)]">{bio.length}/500</p>
+          <p className="mt-1 text-xs text-[var(--sb-muted)]">{bio.length}/500</p>
         </div>
 
         {profileMsg && (
-          <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)]">
+          <p className="rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2 text-sm text-[var(--foreground)]">
             {profileMsg}
           </p>
         )}
@@ -136,7 +136,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         </div>
 
         {emailMsg && (
-          <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)]">
+          <p className="rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2 text-sm text-[var(--foreground)]">
             {emailMsg}
           </p>
         )}
@@ -144,7 +144,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         <button
           type="submit"
           disabled={savingEmail}
-          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-white/10 disabled:opacity-50"
+          className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-4 py-2.5 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--sb-item-bg-hover)] disabled:opacity-50"
         >
           {savingEmail ? 'Updating…' : 'Update email'}
         </button>
@@ -176,7 +176,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
           <div>
             <label
               htmlFor="confirm-password"
-              className="mb-1 block text-xs font-medium text-slate-600"
+              className="mb-1 block text-xs font-medium text-[var(--sb-muted)]"
             >
               Confirm password
             </label>
@@ -193,7 +193,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         </div>
 
         {passwordMsg && (
-          <p className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-[rgba(226,232,240,0.88)]">
+          <p className="rounded-lg border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2 text-sm text-[var(--foreground)]">
             {passwordMsg}
           </p>
         )}
@@ -201,7 +201,7 @@ export function AccountSettingsForm({ initialEmail, initialFullName, initialBio 
         <button
           type="submit"
           disabled={savingPassword}
-          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-white/10 disabled:opacity-50"
+          className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-4 py-2.5 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--sb-item-bg-hover)] disabled:opacity-50"
         >
           {savingPassword ? 'Updating…' : 'Update password'}
         </button>

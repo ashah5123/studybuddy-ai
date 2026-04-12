@@ -31,7 +31,7 @@ export function TabsList({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`inline-flex rounded-xl border border-white/10 bg-white/5 p-1 ${className}`.trim()}
+      className={`inline-flex rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-1 ${className}`.trim()}
       {...props}
     />
   )
@@ -54,7 +54,7 @@ export function TabsTrigger({
       type="button"
       onClick={() => ctx.setValue(value)}
       className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
-        active ? 'bg-white/15 text-[var(--foreground)]' : 'text-[var(--sb-muted)] hover:text-[var(--foreground)]'
+        active ? 'bg-[var(--sb-item-bg-hover)] text-[var(--foreground)]' : 'text-[var(--sb-muted)] hover:text-[var(--foreground)]'
       } ${className}`.trim()}
     >
       {children}

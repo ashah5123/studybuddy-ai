@@ -6,7 +6,7 @@ import type {
   FlashcardDeck,
   Message,
   Note,
-  StudyPlan,
+StudyPlan,
   StudyPlanTask,
   StudySession,
 } from '@/types/database.types'
@@ -278,3 +278,4 @@ export async function getStudyPlanTasks(planId: string): Promise<StudyPlanTask[]
   if (error) throw new Error(error.message)
   return (data as StudyPlanTask[]) ?? []
 }
+

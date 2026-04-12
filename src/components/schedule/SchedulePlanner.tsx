@@ -91,7 +91,7 @@ export function SchedulePlanner() {
           <button
             type="button"
             onClick={goPrevMonth}
-            className="rounded-xl border border-white/10 bg-white/5 p-2 text-[rgba(226,232,240,0.9)] shadow-sm hover:bg-white/10"
+            className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-2 text-[var(--foreground)] shadow-sm hover:bg-[var(--sb-item-bg-hover)]"
             aria-label="Previous month"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -102,7 +102,7 @@ export function SchedulePlanner() {
           <button
             type="button"
             onClick={goNextMonth}
-            className="rounded-xl border border-white/10 bg-white/5 p-2 text-[rgba(226,232,240,0.9)] shadow-sm hover:bg-white/10"
+            className="rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-2 text-[var(--foreground)] shadow-sm hover:bg-[var(--sb-item-bg-hover)]"
             aria-label="Next month"
           >
             <ChevronRight className="h-5 w-5" />
@@ -110,7 +110,7 @@ export function SchedulePlanner() {
           <button
             type="button"
             onClick={() => setViewDate(new Date())}
-            className="ml-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-[var(--foreground)] hover:bg-white/10"
+            className="ml-1 rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-3 py-2 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--sb-item-bg-hover)]"
           >
             Today
           </button>
@@ -162,8 +162,8 @@ export function SchedulePlanner() {
                   }}
                   className={`group flex min-h-[88px] flex-col rounded-xl border p-1.5 text-left transition-colors sm:min-h-[100px] sm:p-2 ${
                     inMonth
-                      ? 'cursor-pointer border-white/10 bg-white/5 hover:bg-white/10'
-                      : 'cursor-pointer border-transparent bg-white/[0.03] text-[rgba(148,163,184,0.65)] hover:bg-white/[0.06]'
+                      ? 'cursor-pointer border-[var(--sb-border)] bg-[var(--sb-item-bg)] hover:bg-[var(--sb-item-bg-hover)]'
+                      : 'cursor-pointer border-transparent bg-transparent text-[var(--sb-muted-2)] hover:bg-[var(--sb-item-bg)]'
                   } ${isSelected ? 'ring-2 ring-indigo-400 ring-offset-1' : ''} `}
                 >
                   <div className="mb-1 flex items-start justify-between gap-1">
@@ -173,7 +173,7 @@ export function SchedulePlanner() {
                           ? 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-sm'
                           : inMonth
                             ? 'text-[var(--foreground)]'
-                            : 'text-[rgba(148,163,184,0.65)]'
+                            : 'text-[var(--sb-muted-2)]'
                       }`}
                     >
                       {format(day, 'd')}
@@ -185,7 +185,7 @@ export function SchedulePlanner() {
                         setSelectedDay(day)
                         openCreate(day)
                       }}
-                      className="rounded-md p-0.5 text-[rgba(148,163,184,0.85)] opacity-0 transition-opacity hover:bg-white/10 hover:text-[var(--sb-accent)] group-hover:opacity-100"
+                      className="rounded-md p-0.5 text-[var(--sb-muted)] opacity-0 transition-opacity hover:bg-[var(--sb-item-bg-hover)] hover:text-[var(--sb-accent)] group-hover:opacity-100"
                       aria-label={`Add block on ${format(day, 'MMM d')}`}
                     >
                       <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -237,7 +237,7 @@ export function SchedulePlanner() {
 
           <div className="mt-4 flex-1 space-y-2 overflow-y-auto">
             {selectedDayEvents.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-8 text-center text-sm text-[var(--sb-muted)]">
+              <p className="rounded-xl border border-dashed border-[var(--sb-border)] bg-[var(--sb-item-bg)] px-4 py-8 text-center text-sm text-[var(--sb-muted)]">
                 Nothing scheduled — add a study block or class.
               </p>
             ) : (
@@ -246,7 +246,7 @@ export function SchedulePlanner() {
                   key={ev.id}
                   type="button"
                   onClick={() => openEdit(ev)}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-left shadow-sm transition-colors hover:bg-white/10"
+                  className="w-full rounded-xl border border-[var(--sb-border)] bg-[var(--sb-item-bg)] p-3 text-left shadow-sm transition-colors hover:bg-[var(--sb-item-bg-hover)]"
                 >
                   <div className="flex items-start gap-3">
                     <span

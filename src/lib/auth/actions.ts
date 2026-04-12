@@ -32,6 +32,15 @@ export async function signUp(
   return { needsConfirmation: true }
 }
 
+export async function resendConfirmationEmail(
+  email: string
+): Promise<{ error?: string; sent?: boolean }> {
+  const supabase = await createClient()
+  const { error } = await supabase.auth.resend({ type: 'signup', email })
+  if (error) return { error: error.message }
+  return { sent: true }
+}
+
 export async function signIn(
   email: string,
   password: string

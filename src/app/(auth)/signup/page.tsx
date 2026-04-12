@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
-import { signUp, signInWithGoogle } from '@/lib/auth/actions'
+import { signUp, signInWithGoogle, resendConfirmationEmail } from '@/lib/auth/actions'
 import { signupSchema, type SignupInput } from '@/lib/validations/auth'
 
 export default function SignupPage() {
@@ -13,6 +13,8 @@ export default function SignupPage() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
   const [confirmation, setConfirmation] = useState(false)
+  const [confirmedEmail, setConfirmedEmail] = useState('')
+  const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [googleLoading, setGoogleLoading] = useState(false)
 
   const {
@@ -29,6 +31,7 @@ export default function SignupPage() {
     if (result?.error) {
       setServerError(result.error)
     } else if (result?.needsConfirmation) {
+      setConfirmedEmail(data.email)
       setConfirmation(true)
     }
   }
@@ -45,20 +48,66 @@ export default function SignupPage() {
     }
   }
 
+  async function handleResend() {
+    setResendStatus('sending')
+    const result = await resendConfirmationEmail(confirmedEmail)
+    setResendStatus(result.error ? 'error' : 'sent')
+  }
+
   if (confirmation) {
     return (
       <div className="flex flex-col items-center gap-5 py-2 text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
           <CheckCircle2 className="h-8 w-8 text-emerald-300" />
         </div>
+
         <div>
           <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-            Check your email
+            Account created! Check your email
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-[var(--sb-muted)]">
-            We sent a confirmation link. Open it to activate your account.
+            We sent a confirmation email to{' '}
+            <span className="font-semibold text-[var(--foreground)]">{confirmedEmail}</span>
           </p>
         </div>
+
+        <ul className="w-full space-y-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-left text-sm text-[var(--sb-muted)]">
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-emerald-400">✓</span>
+            Click the link in the email to activate your account
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-amber-400">!</span>
+            Can&rsquo;t find it? Check your spam or junk folder
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-[var(--sb-muted)]">→</span>
+            The link expires after 24 hours
+          </li>
+        </ul>
+
+        <div className="flex w-full flex-col gap-2">
+          {resendStatus === 'sent' ? (
+            <p className="text-sm text-emerald-400">Confirmation email resent!</p>
+          ) : (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={resendStatus === 'sending'}
+              className="sb-btn-secondary text-sm"
+            >
+              {resendStatus === 'sending' ? (
+                <><Loader2 className="h-4 w-4 animate-spin" /> Sending…</>
+              ) : (
+                'Resend confirmation email'
+              )}
+            </button>
+          )}
+          {resendStatus === 'error' && (
+            <p className="text-xs text-rose-400">Failed to resend. Please try again shortly.</p>
+          )}
+        </div>
+
         <Link
           href="/login"
           className="text-sm font-semibold text-[var(--sb-accent)] transition-colors hover:text-[var(--sb-accent-muted)]"
